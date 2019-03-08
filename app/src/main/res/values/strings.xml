@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AroundHere</string>
+    <string name="place_opening">Opening</string>
+    <string name="place_closed">Closed</string>
+    <string name="sample_search_count">Found 1 result within 1km</string>
+    <string name="sample_photo">https://images.foody.vn/res/g2/12699/prof/s640x400/foody-upload-api-foody-mobile-bcg-jpg-180604131834.jpg</string>
+    <string name="sample_address">5 Ngõ 28 Ngụy Như Kon Tum</string>
+    <string name="sample_title">Canh Cá Rô Tứ Thân</string>
 </resources>
