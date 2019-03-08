@@ -64,7 +64,8 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         super.onAttach(context);
         mContext = context;
         mPresenter = new DiscoverPresenter(
-                PlaceRepository.getInstance(PlaceRemoteDataSource.getInstance()),
+                PlaceRepository.getInstance(getActivity().getApplicationContext(),
+                        PlaceRemoteDataSource.getInstance()),
                 this);
     }
 

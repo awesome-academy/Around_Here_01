@@ -13,6 +13,7 @@ public class PlaceEntityDataMapper {
                     .setDetailUrl(entity.getDetailUrl())
                     .setFavored(entity.isFavored())
                     .setCheckedIn(entity.isCheckedIn())
+                    .setCheckedInTime(entity.getCheckedInTime())
                     .build();
         }
         return null;

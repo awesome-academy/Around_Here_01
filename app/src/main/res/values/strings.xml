@@ -32,4 +32,10 @@
     <string name="place_info_price">%,d - %,d đ</string>
     <string name="place_info_time">%1s - %2s</string>
     <string name="place_detail_no_review">No review yet. Please check back later</string>
+    <string name="place_detail_visited">Visited %s</string>
+    <string name="place_detail_favorite_added">Added to Favorites</string>
+    <string name="place_detail_favorite_removed">Removed from Favorites</string>
+    <string name="place_detail_visited_added">Added to Visited Places</string>
+    <string name="place_detail_visited_removed">Removed from Visited Places</string>
+    <string name="place_detail_unknown_update_code">Unknown update code</string>
 </resources>
