@@ -17,21 +17,6 @@ public abstract class BaseDataDownloadHandler<T> implements DataDownloadHandler<
     public BaseDataDownloadHandler() {
     }
 
-    public void buildUrlConnection(HttpsURLConnection connection) throws IOException {
-        connection.setRequestMethod(Constants.METHOD_GET);
-    }
-
-    public String readStream(InputStream stream) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        StringBuilder builder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            builder.append(line);
-        }
-        reader.close();
-        return builder.toString();
-    }
-
     @Override
     public T downloadUrl(String urlString) throws IOException, JSONException {
         URL url = new URL(urlString);
@@ -59,5 +44,20 @@ public abstract class BaseDataDownloadHandler<T> implements DataDownloadHandler<
             }
         }
         return data;
+    }
+
+    public void buildUrlConnection(HttpsURLConnection connection) throws IOException {
+        connection.setRequestMethod(Constants.METHOD_GET);
+    }
+
+    private String readStream(InputStream stream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        StringBuilder builder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+        }
+        reader.close();
+        return builder.toString();
     }
 }

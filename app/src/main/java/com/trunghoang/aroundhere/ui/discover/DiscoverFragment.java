@@ -31,6 +31,7 @@ import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.PlaceClickListener;
 import com.trunghoang.aroundhere.ui.adapter.PlacesAdapter;
 import com.trunghoang.aroundhere.ui.place.PlaceActivity;
+import com.trunghoang.aroundhere.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,12 +86,14 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addOnItemTouchListener(new PlaceClickListener(mContext,
                 new PlaceClickListener.OnPlaceClickCallback() {
-                    @Override
-                    public void onSingleTapUp(MotionEvent e) {
-                        View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                        showPlaceActivity();
-                    }
-                }));
+            @Override
+            public void onSingleTapUp(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child == null) return;
+                int adapterPosition = recyclerView.getChildAdapterPosition(child);
+                showPlaceActivity(mPlacesAdapter.getItemAtPosition(adapterPosition));
+            }
+        }));
         mPresenter.start();
         return mRootView;
     }
@@ -131,7 +134,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     @Override
     public void showPlaces(List<Place> places) {
-        mPlacesAdapter.setPlaces(places);
+        mPlacesAdapter.setData(places);
         showSearchResultCount(places.size());
     }
 
@@ -172,8 +175,9 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         }
     }
 
-    private void showPlaceActivity() {
+    private void showPlaceActivity(Place place) {
         Intent intent = new Intent(mContext, PlaceActivity.class);
+        intent.putExtra(Constants.EXTRA_PLACE, place);
         startActivity(intent);
     }
 

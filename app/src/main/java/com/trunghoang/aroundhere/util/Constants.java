@@ -10,4 +10,5 @@ public class Constants {
     public static final String HEADER_X_REQUEST_XML = "XMLHttpRequest";
     public static final String EXCEPTION_IO_HTTP = "HTTP error code: %s";
     public static final String EXCEPTION_IO_NO_RESPONSE = "No response received";
+    public static final String EXTRA_PLACE = "EXTRA_PLACE";
 }

@@ -16,13 +16,10 @@ import com.trunghoang.aroundhere.util.CalcUtils;
 
 import java.util.List;
 
-public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
-    private List<Place> mPlaces;
-    private Context mContext;
+public class PlacesAdapter extends BaseAdapter<Place, PlacesAdapter.PlaceViewHolder> {
 
     public PlacesAdapter(Context context, List<Place> places) {
-        mContext = context;
-        mPlaces = places;
+        super(context, places);
     }
 
     @NonNull
@@ -30,22 +27,12 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_places, parent, false);
-        return new PlaceViewHolder(mContext, v);
+        return new PlaceViewHolder(getContext(), v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PlaceViewHolder placeViewHolder, int position) {
-        placeViewHolder.bindView(mPlaces.get(position));
-    }
-
-    @Override
-    public int getItemCount() {
-        return mPlaces == null ? 0 : mPlaces.size();
-    }
-
-    public void setPlaces(List<Place> places) {
-        mPlaces = places;
-        notifyDataSetChanged();
+        placeViewHolder.bindView(getData().get(position));
     }
 
     static class PlaceViewHolder extends RecyclerView.ViewHolder {

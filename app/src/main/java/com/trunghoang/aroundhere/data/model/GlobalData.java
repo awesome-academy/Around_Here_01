@@ -30,6 +30,21 @@ public class GlobalData {
     private static final String DEFAULT_PAGE = "1";
     private static final String DEFAULT_PROVINCEID = "218";
     private static final String DEFAULT_APPEND = "true";
+    private static final String API_PATH_GET = "__get";
+    private static final String API_PATH_REVIEW = "Review";
+    private static final String API_PATH_RESLOADMORE = "ResLoadMore";
+    private static final String API_QUERY_RES_ID = "ResId";
+    private static final String API_QUERY_COUNT = "Count";
+    private static final String API_QUERY_TYPE = "Type";
+    private static final String API_QUERY_FROM_OWNER = "fromOwner";
+    private static final String API_QUERY_IS_LASTEST = "isLatest";
+    private static final String API_QUERY_EXCLUDEIDS = "ExcludeIds";
+    private static final String DEFAULT_REVIEW_RES_ID = "";
+    private static final String DEFAULT_REVIEW_COUNT = "10";
+    private static final String DEFAULT_REVIEW_TYPE = "1";
+    private static final String DEFAULT_FROM_OWNER = "";
+    private static final String DEFAULT_REVIEW_IS_LASTEST = "true";
+    private static final String DEFAULT_REVIEW_EXCLUDEIDS = "";
     private static GlobalData sInstance;
     private static final Map<String, String> PROVINCES;
 
@@ -86,6 +101,32 @@ public class GlobalData {
                 .appendQueryParameter(API_QUERY_PAGE, mPage)
                 .appendQueryParameter(API_QUERY_PROVINCEID, provinceId)
                 .appendQueryParameter(API_QUERY_APPEND, DEFAULT_APPEND)
+                .build()
+                .toString();
+    }
+
+    public String getReviewsApiUrl(String resId) {
+        return new Uri.Builder()
+                .scheme(SCHEME_HTTPS)
+                .authority(Constants.API_BASE_URL)
+                .appendPath(API_PATH_GET)
+                .appendPath(API_PATH_REVIEW)
+                .appendPath(API_PATH_RESLOADMORE)
+                .appendQueryParameter(API_QUERY_RES_ID, resId)
+                .appendQueryParameter(API_QUERY_COUNT, DEFAULT_REVIEW_COUNT)
+                .appendQueryParameter(API_QUERY_TYPE, DEFAULT_REVIEW_TYPE)
+                .appendQueryParameter(API_QUERY_FROM_OWNER, DEFAULT_FROM_OWNER)
+                .appendQueryParameter(API_QUERY_IS_LASTEST, DEFAULT_REVIEW_IS_LASTEST)
+                .appendQueryParameter(API_QUERY_EXCLUDEIDS, DEFAULT_REVIEW_EXCLUDEIDS)
+                .build()
+                .toString();
+    }
+
+    public String getPlaceApiUrl(String detailUrl) {
+        return new Uri.Builder()
+                .scheme(SCHEME_HTTPS)
+                .authority(Constants.API_BASE_URL)
+                .appendPath(detailUrl)
                 .build()
                 .toString();
     }
