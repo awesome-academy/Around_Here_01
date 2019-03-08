@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_radius">14dp</dimen>
+    <dimen name="search_margin_side">16dp</dimen>
+    <dimen name="search_margin_bot">12dp</dimen>
+    <dimen name="quick_search_icon_size">34dp</dimen>
+    <dimen name="detail_main_info_size">20sp</dimen>
+    <dimen name="detail_title_size">20sp</dimen>
+    <dimen name="discover_search_count_size">16sp</dimen>
+    <dimen name="search_icon_margin_all">8dp</dimen>
+    <dimen name="search_text_margin_all">8dp</dimen>
+    <dimen name="quick_search_padding_horizontal">24dp</dimen>
+    <dimen name="quick_search_padding_vertical">12dp</dimen>
+    <dimen name="quick_search_text_margin_top">8dp</dimen>
+    <dimen name="search_count_margin_vertical">8dp</dimen>
+    <dimen name="place_info_bound_margin_vertical">16dp</dimen>
+    <dimen name="place_info_margin_left">8dp</dimen>
+    <dimen name="place_info_bound_margin_horizontal">24dp</dimen>
+    <dimen name="place_info_distance_divider_size">10dp</dimen>
+    <dimen name="place_info_title_margin_top">8dp</dimen>
+    <dimen name="place_info_address_margin_top">4dp</dimen>
+    <dimen name="place_info_more_margin_top">16dp</dimen>
+    <dimen name="place_info_more_icon_size">12dp</dimen>
+</resources>

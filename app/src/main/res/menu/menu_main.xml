@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/item_discover"
+        android:enabled="true"
+        android:icon="@drawable/ic_discover_tab"
+        android:title="@string/tab_discover"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_favorite_tab"
+        android:title="@string/tab_favorites"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings_tab"
+        android:title="@string/tab_settings"
+        app:showAsAction="ifRoom" />
+</menu>
