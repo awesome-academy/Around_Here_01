@@ -18,4 +18,18 @@
     <string name="sample_open_status">Opening</string>
     <string name="place_info_more_text">View More</string>
     <string name="place_info_distance">%1.2fkm</string>
+    <string name="place_detail_price_title">Price range:</string>
+    <string name="place_detail_time_title">Open time:</string>
+    <string name="place_detail_menu_title">MENU</string>
+    <string name="place_detail_review_title">REVIEWS</string>
+    <string name="sample_item_review_name">Kyoshiro</string>
+    <string name="sample_item_review_time">2 hours ago</string>
+    <string name="sample_item_review_content">Đồ ăn được, phục vụ tốt, thời gian phục vụ rất nhanh. Thêm nữa là view rất đẹp. Chấm 5 sao</string>
+    <string name="sample_item_review_score">3.2</string>
+    <string name="place_detail_button_checkin">CHECK IN</string>
+    <string name="default_price">No information</string>
+    <string name="default_time">No information</string>
+    <string name="place_info_price">%,d - %,d đ</string>
+    <string name="place_info_time">%1s - %2s</string>
+    <string name="place_detail_no_review">No review yet. Please check back later</string>
 </resources>

@@ -8,4 +8,5 @@
     <color name="colorBackgroundSection">#FFFFFF</color>
     <color name="colorTextSecondary">#000000</color>
     <color name="colorDimBackground">#E0E0E0</color>
+    <color name="color_yellow_checkin">#FFF731</color>
 </resources>

@@ -21,4 +21,24 @@
     <dimen name="place_info_address_margin_top">4dp</dimen>
     <dimen name="place_info_more_margin_top">16dp</dimen>
     <dimen name="place_info_more_icon_size">12dp</dimen>
+    <dimen name="place_detail_title_margin_top">24dp</dimen>
+    <dimen name="place_detail_bound_margin_horizontal">8dp</dimen>
+    <dimen name="place_detail_margin_top">8dp</dimen>
+    <dimen name="place_detail_title_icon_size">16dp</dimen>
+    <dimen name="place_detail_margin_left">8dp</dimen>
+    <dimen name="place_detail_main_info_margin_vertical">16dp</dimen>
+    <dimen name="place_detail_time_margin_left">80dp</dimen>
+    <dimen name="place_detail_reviews_margin_right">16dp</dimen>
+    <dimen name="item_review_avatar_size">40dp</dimen>
+    <dimen name="item_review_margin_left">8dp</dimen>
+    <dimen name="item_review_margin_top">8dp</dimen>
+    <dimen name="item_review_margin_right">8dp</dimen>
+    <dimen name="place_detail_cover">192dp</dimen>
+    <dimen name="place_detail_scroll_margin_bottom">70dp</dimen>
+    <dimen name="item_reviews_layout_margin_top">16dp</dimen>
+    <dimen name="item_reviews_layout_margin_bottom">8dp</dimen>
+    <dimen name="place_detail_rating_size">40dp</dimen>
+    <dimen name="place_detail_rating_stroke" format="float">0.5dp</dimen>
+    <dimen name="place_detail_rating_text_size">20sp</dimen>
+    <dimen name="place_detail_button_padding">5dp</dimen>
 </resources>
