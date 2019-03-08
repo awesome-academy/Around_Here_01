@@ -2,13 +2,21 @@ package com.trunghoang.aroundhere.data.model;
 
 public class Place {
 
-    private long mDistance;
+    private double mDistance;
     private boolean mIsOpen;
     private String mPhoto;
     private String mTitle;
     private String mAddress;
 
-    public long getDistance() {
+    public Place(double distance, boolean isOpen, String photo, String title, String address) {
+        mDistance = distance;
+        mIsOpen = isOpen;
+        mPhoto = photo;
+        mTitle = title;
+        mAddress = address;
+    }
+
+    public double getDistance() {
         return mDistance;
     }
 
@@ -46,5 +54,45 @@ public class Place {
 
     public void setAddress(String address) {
         mAddress = address;
+    }
+
+    public static class Builder {
+        private double mDistance;
+        private boolean mIsOpen;
+        private String mPhoto;
+        private String mTitle;
+        private String mAddress;
+
+        public Builder() {
+        }
+
+        public Builder setDistance(double distance) {
+            mDistance = distance;
+            return this;
+        }
+
+        public Builder setOpen(boolean open) {
+            mIsOpen = open;
+            return this;
+        }
+
+        public Builder setPhoto(String photo) {
+            mPhoto = photo;
+            return this;
+        }
+
+        public Builder setTitle(String title) {
+            mTitle = title;
+            return this;
+        }
+
+        public Builder setAddress(String address) {
+            mAddress = address;
+            return this;
+        }
+
+        public Place build() {
+            return new Place(mDistance, mIsOpen, mPhoto, mTitle, mAddress);
+        }
     }
 }

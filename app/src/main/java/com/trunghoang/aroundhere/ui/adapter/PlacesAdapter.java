@@ -9,9 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Place;
+import com.trunghoang.aroundhere.util.CalcUtils;
 
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     @NonNull
     @Override
     public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recycler_item, parent, false);
         return new PlaceViewHolder(mContext, v);
     }
 
@@ -39,6 +41,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     @Override
     public int getItemCount() {
         return mPlaces == null ? 0 : mPlaces.size();
+    }
+
+    public void setPlaces(List<Place> places) {
+        mPlaces = places;
+        notifyDataSetChanged();
     }
 
     static class PlaceViewHolder extends RecyclerView.ViewHolder {
@@ -63,11 +70,11 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             if (place == null) {
                 return;
             }
-            Picasso.get()
+            Glide.with(mContext)
                     .load(place.getPhoto())
                     .into(mPlacePhoto);
-            String distance = String.valueOf(place.getDistance());
-            mDistance.setText(distance);
+            mDistance.setText(mContext.getString(R.string.place_info_distance,
+                    CalcUtils.getKm(place.getDistance())));
             String placeIsOpenText;
             if (place.isOpen()) {
                 placeIsOpenText = mContext.getString(R.string.place_opening);
