@@ -1,6 +1,7 @@
 package com.trunghoang.aroundhere.data.model;
 
 public class Place {
+
     private long mDistance;
     private boolean mIsOpen;
     private String mPhoto;
