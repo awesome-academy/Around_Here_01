@@ -1,5 +1,6 @@
 package com.trunghoang.aroundhere.ui.discover;
 
+import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.model.Place;
@@ -22,15 +23,15 @@ public class DiscoverPresenter implements DiscoverContract.Presenter {
     @Override
     public void start() {
         if (mView.isLocationPermissionGranted()) {
-            loadPlaces();
+            mView.detectLocation();
         } else {
             mView.requestLocationPermission();
         }
     }
 
     @Override
-    public void loadPlaces() {
-        mPlacesRepository.getPlaces(new PlaceDataSource.LoadPlacesCallback() {
+    public void loadPlaces(Location location) {
+        mPlacesRepository.getPlaces(location, new PlaceDataSource.LoadPlacesCallback() {
             @Override
             public void OnPlacesLoaded(List<Place> places) {
                 if (!mView.isActive()) return;

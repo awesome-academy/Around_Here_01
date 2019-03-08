@@ -2,7 +2,6 @@ package com.trunghoang.aroundhere.util;
 
 public class Constants {
     public static final String API_BASE_URL = "www.foody.vn";
-    public static final String HANOI = "ha-noi";
     public static final String PLACE = "dia-diem";
     public static final String METHOD_GET = "GET";
     public static final String HEADER_ACCEPT = "Accept";
