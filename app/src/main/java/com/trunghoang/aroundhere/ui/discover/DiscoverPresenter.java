@@ -4,18 +4,18 @@ import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.model.Place;
-import com.trunghoang.aroundhere.data.model.PlaceDataSource;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
+import com.trunghoang.aroundhere.data.model.OnDataLoadedCallback;
 
 import java.util.List;
 
 public class DiscoverPresenter implements DiscoverContract.Presenter {
-    private final PlaceRepository mPlacesRepository;
+    private final PlaceRepository mPlaceRepository;
     private final DiscoverContract.View mView;
 
-    public DiscoverPresenter(@NonNull PlaceRepository placesRepository,
+    public DiscoverPresenter(@NonNull PlaceRepository placeRepository,
                              @NonNull DiscoverContract.View view) {
-        mPlacesRepository = placesRepository;
+        mPlaceRepository = placeRepository;
         mView = view;
         mView.setPresenter(this);
     }
@@ -31,18 +31,23 @@ public class DiscoverPresenter implements DiscoverContract.Presenter {
 
     @Override
     public void loadPlaces(Location location) {
-        mPlacesRepository.getPlaces(location, new PlaceDataSource.LoadPlacesCallback() {
+        mPlaceRepository.getPlaces(location, new OnDataLoadedCallback<List<Place>>() {
             @Override
-            public void OnPlacesLoaded(List<Place> places) {
+            public void onDataLoaded(List<Place> places) {
                 if (!mView.isActive()) return;
                 processPlaces(places);
             }
 
             @Override
-            public void OnDataNotAvailable(Exception exception) {
+            public void onDataNotAvailable(Exception exception) {
                 mView.showLoadingPlacesError(exception);
             }
         });
+    }
+
+    @Override
+    public void openPlaceActivity() {
+        mView.showPlaceActivity();
     }
 
     private void processPlaces(List<Place> places) {

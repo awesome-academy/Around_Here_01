@@ -14,6 +14,8 @@ public interface DiscoverContract {
 
         void showLoadingPlacesError(Exception e);
 
+        void showPlaceActivity();
+
         boolean isActive();
 
         boolean isLocationPermissionGranted();
@@ -25,5 +27,7 @@ public interface DiscoverContract {
 
     interface Presenter extends BasePresenter {
         void loadPlaces(Location location);
+
+        void openPlaceActivity();
     }
 }
