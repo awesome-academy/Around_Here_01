@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorDimBackground">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_discover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/search_margin_side"
+            android:layout_marginLeft="@dimen/search_margin_side"
+            android:layout_marginTop="@dimen/search_margin_bot"
+            android:layout_marginEnd="@dimen/search_margin_side"
+            android:layout_marginRight="@dimen/search_margin_side"
+            android:layout_marginBottom="@dimen/search_margin_bot"
+            android:background="@drawable/shape_search_bg">
+
+            <ImageView
+                android:id="@+id/image_search_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/search_icon_margin_all"
+                android:contentDescription="@string/search_hint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_search" />
+
+            <TextView
+                android:id="@+id/text_search_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/search_text_margin_all"
+                android:text="@string/search_hint"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_search_icon"
+                app:layout_constraintTop_toTopOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_discover">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_quick_search_bar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/colorBackgroundSection"
+                android:paddingLeft="@dimen/quick_search_padding_horizontal"
+                android:paddingTop="@dimen/quick_search_padding_vertical"
+                android:paddingRight="@dimen/quick_search_padding_horizontal"
+                android:paddingBottom="@dimen/quick_search_padding_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/image_restaurant"
+                    style="@style/QuickSearchIcon"
+                    app:layout_constraintEnd_toStartOf="@+id/image_coffee"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_quick_search_food" />
+
+                <ImageView
+                    android:id="@+id/image_coffee"
+                    style="@style/QuickSearchIcon"
+                    app:layout_constraintEnd_toStartOf="@+id/image_beer"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_restaurant"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_quick_search_coffee" />
+
+                <ImageView
+                    android:id="@+id/image_beer"
+                    style="@style/QuickSearchIcon"
+                    app:layout_constraintEnd_toStartOf="@+id/image_entertain"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_coffee"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_quick_search_beer" />
+
+                <ImageView
+                    android:id="@+id/image_entertain"
+                    style="@style/QuickSearchIcon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/image_beer"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/ic_quick_search_entertain" />
+
+                <TextView
+                    android:id="@+id/text_restaurant"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/quick_search_text_margin_top"
+                    android:text="@string/quick_search_restaurant_text"
+                    app:layout_constraintEnd_toEndOf="@+id/image_restaurant"
+                    app:layout_constraintStart_toStartOf="@+id/image_restaurant"
+                    app:layout_constraintTop_toBottomOf="@+id/image_restaurant" />
+
+                <TextView
+                    android:id="@+id/text_coffee"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/quick_search_text_margin_top"
+                    android:text="@string/quick_search_coffee_text"
+                    app:layout_constraintEnd_toEndOf="@+id/image_coffee"
+                    app:layout_constraintStart_toStartOf="@+id/image_coffee"
+                    app:layout_constraintTop_toBottomOf="@+id/image_coffee" />
+
+                <TextView
+                    android:id="@+id/text_beer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/quick_search_text_margin_top"
+                    android:text="@string/quick_search_beer_text"
+                    app:layout_constraintEnd_toEndOf="@+id/image_beer"
+                    app:layout_constraintStart_toStartOf="@+id/image_beer"
+                    app:layout_constraintTop_toBottomOf="@+id/image_beer" />
+
+                <TextView
+                    android:id="@+id/text_entertain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/quick_search_text_margin_top"
+                    android:text="@string/quick_search_entertain_text"
+                    app:layout_constraintEnd_toEndOf="@+id/image_entertain"
+                    app:layout_constraintStart_toStartOf="@+id/image_entertain"
+                    app:layout_constraintTop_toBottomOf="@+id/image_entertain" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_search_count"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/constraint_quick_search_bar">
+
+                <TextView
+                    android:id="@+id/text_search_count"
+                    style="@style/SearchCountDiscover"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/search_count_margin_vertical"
+                    android:layout_marginBottom="@dimen/search_count_margin_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:text="Found 1 result within 1km" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_place_list"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraint_search_count"
+                tools:listitem="@layout/recycler_item" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</android.support.constraint.ConstraintLayout>
+

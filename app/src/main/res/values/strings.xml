@@ -6,4 +6,15 @@
     <string name="sample_photo">https://images.foody.vn/res/g2/12699/prof/s640x400/foody-upload-api-foody-mobile-bcg-jpg-180604131834.jpg</string>
     <string name="sample_address">5 Ngõ 28 Ngụy Như Kon Tum</string>
     <string name="sample_title">Canh Cá Rô Tứ Thân</string>
+    <string name="tab_discover">Discover</string>
+    <string name="tab_favorites">Favorites</string>
+    <string name="tab_settings">Settings</string>
+    <string name="search_hint">Search something</string>
+    <string name="quick_search_restaurant_text">Restaurant</string>
+    <string name="quick_search_coffee_text">Coffee</string>
+    <string name="quick_search_beer_text">Beer</string>
+    <string name="quick_search_entertain_text">Entertain</string>
+    <string name="sample_distance">200m</string>
+    <string name="sample_open_status">Opening</string>
+    <string name="place_info_more_text">View More</string>
 </resources>

@@ -1,11 +1,36 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MainInfoPlace">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/detail_main_info_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitlePlace">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textSize">@dimen/detail_title_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MorePlace">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="SearchCountDiscover">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textSize">@dimen/discover_search_count_size</item>
+    </style>
+
+    <style name="QuickSearchIcon">
+        <item name="android:layout_width">@dimen/quick_search_icon_size</item>
+        <item name="android:layout_height">@dimen/quick_search_icon_size</item>
+    </style>
 </resources>

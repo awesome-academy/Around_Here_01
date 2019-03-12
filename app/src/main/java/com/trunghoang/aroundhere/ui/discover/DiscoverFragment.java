@@ -1,5 +1,4 @@
 package com.trunghoang.aroundhere.ui.discover;
-
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,11 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.ui.adapter.PlacesAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +58,7 @@ public class DiscoverFragment extends Fragment {
         RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_place_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         List<Place> dataSet = new ArrayList<>();
-        PlacesAdapter placesAdapter = new PlacesAdapter(dataSet);
+        PlacesAdapter placesAdapter = new PlacesAdapter(getActivity(), dataSet);
         recyclerView.setAdapter(placesAdapter);
         return mRootView;
     }

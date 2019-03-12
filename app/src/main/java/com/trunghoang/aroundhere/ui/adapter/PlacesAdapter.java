@@ -1,6 +1,6 @@
 package com.trunghoang.aroundhere.ui.adapter;
 
-import android.content.res.Resources;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,8 +17,10 @@ import java.util.List;
 
 public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewHolder> {
     private List<Place> mPlaces;
+    private Context mContext;
 
-    public PlacesAdapter(List<Place> places) {
+    public PlacesAdapter(Context context, List<Place> places) {
+        mContext = context;
         mPlaces = places;
     }
 
@@ -26,7 +28,7 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     @Override
     public PlaceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
-        return new PlaceViewHolder(v);
+        return new PlaceViewHolder(mContext, v);
     }
 
     @Override
@@ -40,14 +42,16 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
     }
 
     static class PlaceViewHolder extends RecyclerView.ViewHolder {
+        private Context mContext;
         private ImageView mPlacePhoto;
         private TextView mDistance;
         private TextView mTextOpen;
         private TextView mTitle;
         private TextView mAddress;
 
-        public PlaceViewHolder(@NonNull View itemView) {
+        public PlaceViewHolder(@NonNull Context context, @NonNull View itemView) {
             super(itemView);
+            mContext = context;
             mPlacePhoto = itemView.findViewById(R.id.image_place_photo);
             mDistance = itemView.findViewById(R.id.text_distance);
             mTextOpen = itemView.findViewById(R.id.text_is_open);
@@ -66,9 +70,9 @@ public class PlacesAdapter extends RecyclerView.Adapter<PlacesAdapter.PlaceViewH
             mDistance.setText(distance);
             String placeIsOpenText;
             if (place.isOpen()) {
-                placeIsOpenText = Resources.getSystem().getString(R.string.place_opening);
+                placeIsOpenText = mContext.getString(R.string.place_opening);
             } else {
-                placeIsOpenText = Resources.getSystem().getString(R.string.place_closed);
+                placeIsOpenText = mContext.getString(R.string.place_closed);
             }
             mTextOpen.setText(placeIsOpenText);
             mTitle.setText(place.getTitle());
