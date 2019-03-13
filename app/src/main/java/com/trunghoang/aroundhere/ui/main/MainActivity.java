@@ -10,6 +10,7 @@ import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.ui.discover.DiscoverFragment;
 
 public class MainActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
