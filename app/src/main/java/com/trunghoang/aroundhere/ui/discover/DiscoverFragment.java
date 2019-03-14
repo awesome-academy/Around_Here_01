@@ -88,7 +88,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                     @Override
                     public void onSingleTapUp(MotionEvent e) {
                         View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                        mPresenter.openPlaceActivity();
+                        showPlaceActivity();
                     }
                 }));
         mPresenter.start();
@@ -141,12 +141,6 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     }
 
     @Override
-    public void showPlaceActivity() {
-        Intent intent = new Intent(mContext, PlaceActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     public boolean isActive() {
         return isAdded();
     }
@@ -176,6 +170,11 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         } else {
             requestLocationPermission();
         }
+    }
+
+    private void showPlaceActivity() {
+        Intent intent = new Intent(mContext, PlaceActivity.class);
+        startActivity(intent);
     }
 
     private void showSearchResultCount(int number) {

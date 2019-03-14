@@ -45,11 +45,6 @@ public class DiscoverPresenter implements DiscoverContract.Presenter {
         });
     }
 
-    @Override
-    public void openPlaceActivity() {
-        mView.showPlaceActivity();
-    }
-
     private void processPlaces(List<Place> places) {
         mView.showPlaces(places);
     }

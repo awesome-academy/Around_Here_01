@@ -1,6 +1,7 @@
 package com.trunghoang.aroundhere.data.remote;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.model.OnDataLoadedCallback;
 import com.trunghoang.aroundhere.util.Constants;
@@ -15,8 +16,8 @@ public class DownloadTask<T> extends AsyncTask<String, Integer, T> {
     private DataDownloadHandler<T> mDownloadHandler;
     private Exception mException;
 
-    public DownloadTask(DataDownloadHandler<T> downloadHandler,
-                        OnDataLoadedCallback<T> callback) {
+    public DownloadTask(@NonNull DataDownloadHandler<T> downloadHandler,
+                        @NonNull OnDataLoadedCallback<T> callback) {
         mDownloadHandler = downloadHandler;
         mCallback = callback;
         mException = null;
@@ -40,10 +41,9 @@ public class DownloadTask<T> extends AsyncTask<String, Integer, T> {
 
     @Override
     protected void onPostExecute(T result) {
-        if (mException != null && mCallback != null) {
+        if (mException != null) {
             mCallback.onDataNotAvailable(mException);
         } else {
-            if (result == null || mCallback == null) return;
             mCallback.onDataLoaded(result);
         }
     }
