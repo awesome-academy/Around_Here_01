@@ -32,14 +32,17 @@ public class GlobalData {
     private static final String DEFAULT_APPEND = "true";
     private static GlobalData sInstance;
     private static final Map<String, String> PROVINCES;
+
     static {
         Map<String, String> mapProvinces = new HashMap<>();
         mapProvinces.put("218", "ha-noi");
         PROVINCES = Collections.unmodifiableMap(mapProvinces);
     }
+
     private String mPage;
 
-    private GlobalData() {}
+    private GlobalData() {
+    }
 
     public static GlobalData getInstance() {
         if (sInstance == null) {

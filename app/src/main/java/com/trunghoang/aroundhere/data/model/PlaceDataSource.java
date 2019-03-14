@@ -6,11 +6,6 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 public interface PlaceDataSource {
-    interface LoadPlacesCallback {
-        void OnPlacesLoaded(List<Place> places);
-
-        void OnDataNotAvailable(Exception exception);
-    }
-
-    void getPlaces(Location location, @NonNull LoadPlacesCallback callback);
+    void getPlaces(Location location, @NonNull OnDataLoadedCallback<List<Place>> callback);
+    /*void getPlace(@NonNull OnDataLoadedCallback<Place> callback);*/
 }

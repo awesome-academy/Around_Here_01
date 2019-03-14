@@ -3,6 +3,8 @@ package com.trunghoang.aroundhere.data.model;
 import android.location.Location;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 public class PlaceRepository implements PlaceDataSource {
     private static PlaceRepository sInstance;
     private PlaceDataSource mRemote;
@@ -19,12 +21,17 @@ public class PlaceRepository implements PlaceDataSource {
     }
 
     @Override
-    public void getPlaces(Location location, @NonNull LoadPlacesCallback callback) {
+    public void getPlaces(Location location, @NonNull OnDataLoadedCallback<List<Place>> callback) {
         getPlacesFromRemote(location, callback);
     }
 
+    /*@Override
+    public void getPlace(@NonNull OnDataLoadedCallback<Place> callback) {
+        mRemote.getPlace(callback);
+    }*/
+
     private void getPlacesFromRemote(Location location,
-                                     @NonNull LoadPlacesCallback callback) {
+                                     @NonNull OnDataLoadedCallback<List<Place>> callback) {
         mRemote.getPlaces(location, callback);
     }
 }
