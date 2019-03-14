@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/item_reviews_layout_margin_top"
+    android:layout_marginBottom="@dimen/item_reviews_layout_margin_bottom">
+
+    <ImageView
+        android:id="@+id/image_avatar"
+        android:layout_width="@dimen/item_review_avatar_size"
+        android:layout_height="@dimen/item_review_avatar_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+    <TextView
+        android:id="@+id/text_name"
+        style="@style/ItemReviewsName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_review_margin_left"
+        android:layout_marginLeft="@dimen/item_review_margin_left"
+        app:layout_constraintStart_toEndOf="@+id/image_avatar"
+        app:layout_constraintTop_toTopOf="@+id/image_avatar"
+        tools:text="@string/sample_item_review_name" />
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/text_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_name"
+        tools:text="@string/sample_item_review_time" />
+
+    <TextView
+        android:id="@+id/text_review"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/item_review_margin_top"
+        android:layout_marginEnd="@dimen/item_review_margin_right"
+        android:layout_marginRight="@dimen/item_review_margin_right"
+        app:layout_constraintEnd_toStartOf="@+id/text_score"
+        app:layout_constraintStart_toStartOf="@+id/text_time"
+        app:layout_constraintTop_toBottomOf="@+id/text_time"
+        tools:text="@string/sample_item_review_content" />
+
+    <TextView
+        android:id="@+id/text_score"
+        style="@style/ItemReviewsScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_place_detail_score"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/text_time"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/text_name"
+        tools:text="@string/sample_item_review_score" />
+
+</android.support.constraint.ConstraintLayout>

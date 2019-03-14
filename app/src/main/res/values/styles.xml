@@ -29,8 +29,33 @@
         <item name="android:textSize">@dimen/discover_search_count_size</item>
     </style>
 
+    <style name="SubTitlePlaceDetail">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ItemReviewsName">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ItemReviewsScore">
+        <item name="android:textColor">@color/colorTextSecondary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/place_detail_rating_text_size</item>
+    </style>
+
+    <style name="PlaceDetailCheckinButton">
+        <item name="android:paddingBottom">@dimen/place_detail_button_padding</item>
+        <item name="android:paddingTop">@dimen/place_detail_button_padding</item>
+        <item name="android:background">@color/color_yellow_checkin</item>
+        <item name="android:gravity">center_horizontal|center_vertical</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
+    </style>
+
     <style name="QuickSearchIcon">
         <item name="android:layout_width">@dimen/quick_search_icon_size</item>
         <item name="android:layout_height">@dimen/quick_search_icon_size</item>
     </style>
+
 </resources>
