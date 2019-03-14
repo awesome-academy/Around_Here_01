@@ -14,6 +14,8 @@ public interface PlaceContract {
         void showReviews(List<Review> reviews);
 
         void showLoadingError(Exception e);
+
+        void showLoadingIndicator(boolean isLoading);
     }
 
     interface Presenter extends BasePresenter {

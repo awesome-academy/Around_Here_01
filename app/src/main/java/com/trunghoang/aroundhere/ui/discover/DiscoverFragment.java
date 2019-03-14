@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -79,7 +80,6 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_discover, container, false);
         mSearchCount = mRootView.findViewById(R.id.text_search_count);
-        showSearchResultCount(0);
         final RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_place_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mPlacesAdapter);
@@ -134,13 +134,22 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     @Override
     public void showPlaces(List<Place> places) {
+        showLoadingIndicator(false);
         mPlacesAdapter.setData(places);
         showSearchResultCount(places.size());
     }
 
     @Override
     public void showLoadingPlacesError(Exception e) {
+        showLoadingIndicator(false);
+        mSearchCount.setVisibility(View.VISIBLE);
         mSearchCount.setText(e.getMessage());
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean isLoading) {
+        ProgressBar progressBar = mRootView.findViewById(R.id.progress_places);
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -182,6 +191,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     }
 
     private void showSearchResultCount(int number) {
+        mSearchCount.setVisibility(View.VISIBLE);
         mSearchCount.setText(getString(R.string.sample_search_count, number));
     }
 }

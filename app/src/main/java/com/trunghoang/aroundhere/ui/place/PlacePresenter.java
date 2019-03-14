@@ -41,6 +41,7 @@ public class PlacePresenter implements PlaceContract.Presenter {
     }
 
     private void getReviews(String resId) {
+        mView.showLoadingIndicator(true);
         mPlaceRepository.getReviews(resId, new OnDataLoadedCallback<List<Review>>() {
             @Override
             public void onDataLoaded(List<Review> data) {

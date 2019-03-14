@@ -33,7 +33,7 @@ public class Place implements Parcelable {
     private boolean mIsFavorited;
     private boolean mIsCheckedIn;
 
-    public Place(double distance,
+    private Place(double distance,
                  boolean isOpen,
                  String photo,
                  String title,
@@ -78,13 +78,13 @@ public class Place implements Parcelable {
     }
 
     public Place(JSONObject jsonObject) {
-        mDistance = jsonObject.optDouble(ApiField.API_FIELD_DISTANCE);
-        mIsOpen = jsonObject.optBoolean(ApiField.API_FIELD_OPENING);
-        mPhoto = jsonObject.optString(ApiField.API_FIELD_PHOTO);
-        mTitle = jsonObject.optString(ApiField.API_FIELD_NAME);
-        mAddress = jsonObject.optString(ApiField.API_FIELD_ADDRESS);
-        mResId = jsonObject.optString(ApiField.API_FIELD_PLACE_ID);
-        mDetailUrl = jsonObject.optString(ApiField.API_FIELD_DETAIL_URL);
+        mDistance = jsonObject.optDouble(JSONKey.DISTANCE);
+        mIsOpen = jsonObject.optBoolean(JSONKey.OPENING);
+        mPhoto = jsonObject.optString(JSONKey.PHOTO);
+        mTitle = jsonObject.optString(JSONKey.NAME);
+        mAddress = jsonObject.optString(JSONKey.ADDRESS);
+        mResId = jsonObject.optString(JSONKey.PLACE_ID);
+        mDetailUrl = jsonObject.optString(JSONKey.DETAIL_URL);
     }
 
     public double getDistance() {
@@ -313,20 +313,20 @@ public class Place implements Parcelable {
         }
     }
 
-    public interface ApiField {
-        String API_FIELD_DISTANCE = "Distance";
-        String API_FIELD_OPENING = "IsOpening";
-        String API_FIELD_PHOTO = "MobilePicturePath";
-        String API_FIELD_NAME = "Name";
-        String API_FIELD_ADDRESS = "Address";
-        String API_FIELD_ITEMS = "searchItems";
-        String API_FIELD_DETAIL_URL = "DetailUrl";
-        String API_FIELD_PLACE_ID = "Id";
-        String API_FIELD_PRICE_MIN = "PriceMin";
-        String API_FIELD_PRICE_MAX = "PriceMax";
-        String API_FIELD_TIME_RANGES = "TimeRanges";
-        String API_FIELD_TIME_START = "StartTime";
-        String API_FIELD_TIME_END = "EndTime";
-        String API_FIELD_RES_ID = "RestaurantID";
+    public interface JSONKey {
+        String DISTANCE = "Distance";
+        String OPENING = "IsOpening";
+        String PHOTO = "MobilePicturePath";
+        String NAME = "Name";
+        String ADDRESS = "Address";
+        String ITEMS = "searchItems";
+        String DETAIL_URL = "DetailUrl";
+        String PLACE_ID = "Id";
+        String PRICE_MIN = "PriceMin";
+        String PRICE_MAX = "PriceMax";
+        String TIME_RANGES = "TimeRanges";
+        String TIME_START = "StartTime";
+        String TIME_END = "EndTime";
+        String RES_ID = "RestaurantID";
     }
 }

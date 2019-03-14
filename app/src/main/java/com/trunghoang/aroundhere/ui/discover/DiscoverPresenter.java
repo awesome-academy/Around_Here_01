@@ -31,6 +31,7 @@ public class DiscoverPresenter implements DiscoverContract.Presenter {
 
     @Override
     public void loadPlaces(Location location) {
+        mView.showLoadingIndicator(true);
         mPlaceRepository.getPlaces(location, new OnDataLoadedCallback<List<Place>>() {
             @Override
             public void onDataLoaded(List<Place> places) {

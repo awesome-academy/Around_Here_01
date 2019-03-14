@@ -40,7 +40,7 @@ public class ReviewAdapter extends BaseAdapter<Review, ReviewAdapter.ReviewViewH
         private TextView mTextTime;
         private TextView mTextDes;
         private TextView mTextRating;
-        private ImageView mAvatar;
+        private ImageView mImageAvatar;
 
         public ReviewViewHolder(Context context, @NonNull View itemView) {
             super(itemView);
@@ -49,14 +49,14 @@ public class ReviewAdapter extends BaseAdapter<Review, ReviewAdapter.ReviewViewH
             mTextTime = itemView.findViewById(R.id.text_time);
             mTextDes = itemView.findViewById(R.id.text_review);
             mTextRating = itemView.findViewById(R.id.text_score);
-            mAvatar = itemView.findViewById(R.id.image_avatar);
+            mImageAvatar = itemView.findViewById(R.id.image_avatar);
         }
 
         public void bindView(Review review) {
             if (review == null) return;
             Glide.with(mContext)
                     .load(review.getUser().getAvatar())
-                    .into(mAvatar);
+                    .into(mImageAvatar);
             mTextName.setText(review.getUser().getDisplayName());
             mTextTime.setText(review.getCreatedTimeDiff());
             mTextRating.setText(String.valueOf(review.getAvgRating()));

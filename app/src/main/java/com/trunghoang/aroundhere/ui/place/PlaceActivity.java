@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,31 +36,16 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(null);
-        }
-
+        initToolbar();
+        initRecyclerView();
         Intent intent = getIntent();
         Place place = null;
         if (intent != null && intent.hasExtra(Constants.EXTRA_PLACE)) {
             place = intent.getParcelableExtra(Constants.EXTRA_PLACE);
             bindInitView(place);
         }
-        mReviewAdapter = new ReviewAdapter(this, new ArrayList<Review>());
-        RecyclerView recyclerView = findViewById(R.id.recycler_review);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.setAdapter(mReviewAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
         mPresenter = new PlacePresenter(place,
-                PlaceRepository.getInstance(PlaceRemoteDataSource.getInstance()),
-                this);
+                PlaceRepository.getInstance(PlaceRemoteDataSource.getInstance()), this);
         mPresenter.start();
     }
 
@@ -82,20 +68,43 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
 
     @Override
     public void showReviews(List<Review> reviews) {
-        TextView textLoadingStatus = findViewById(R.id.text_load_reviews_status);
-        if (reviews.size() == 0) {
-            textLoadingStatus = findViewById(R.id.text_load_reviews_status);
-            textLoadingStatus.setVisibility(View.VISIBLE);
-            textLoadingStatus.setText(getString(R.string.place_detail_no_review));
-        } else {
-            textLoadingStatus.setVisibility(View.GONE);
-            mReviewAdapter.setData(reviews);
-        }
+        showLoadingIndicator(false);
+        TextView textLoadingStatus = findViewById(R.id.text_no_reviews);
+        textLoadingStatus.setVisibility(reviews.size() == 0 ? View.VISIBLE : View.GONE);
+        mReviewAdapter.setData(reviews);
     }
 
     @Override
     public void showLoadingError(Exception e) {
+        showLoadingIndicator(false);
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean isLoading) {
+        ProgressBar progressBar = findViewById(R.id.progress_reviews);
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.INVISIBLE);
+    }
+
+    private void initToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(null);
+        }
+    }
+
+    private void initRecyclerView() {
+        mReviewAdapter = new ReviewAdapter(this, new ArrayList<Review>());
+        RecyclerView recyclerView = findViewById(R.id.recycler_review);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(mReviewAdapter);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,
+                linearLayoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
     private void bindInitView(Place place) {

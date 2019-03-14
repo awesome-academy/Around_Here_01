@@ -25,7 +25,7 @@ public class ReviewsDownloadHandler extends BaseDataDownloadHandler<List<Review>
     @Override
     public List<Review> parseRawToData(String in) throws JSONException {
         JSONObject reader = new JSONObject(in);
-        JSONArray itemsJson = reader.getJSONArray(Review.ApiField.API_FIELD_REVIEW_ITEMS);
+        JSONArray itemsJson = reader.getJSONArray(Review.JSONKey.ITEMS);
         List<Review> reviews = new ArrayList<>();
         for (int i = 0; i < itemsJson.length(); i ++) {
             JSONObject itemJson = itemsJson.getJSONObject(i);

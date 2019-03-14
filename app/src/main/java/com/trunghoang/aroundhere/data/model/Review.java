@@ -10,10 +10,10 @@ public class Review {
 
     public Review(JSONObject jsonObject) {
         if (jsonObject == null) return;
-        mUser = new User(jsonObject.optJSONObject(ApiField.API_FIELD_REVIEW_OWNER));
-        mCreatedTimeDiff = jsonObject.optString(ApiField.API_FIELD_REVIEW_CREATED_TIME_DIFF);
-        mDescription = jsonObject.optString(ApiField.API_FIELD_REVIEW_DESCRIPTION);
-        mAvgRating = jsonObject.optDouble(ApiField.API_FIELD_REVIEW_AVG_RATING);
+        mUser = new User(jsonObject.optJSONObject(JSONKey.OWNER));
+        mCreatedTimeDiff = jsonObject.optString(JSONKey.CREATED_TIME_DIFF);
+        mDescription = jsonObject.optString(JSONKey.DESCRIPTION);
+        mAvgRating = jsonObject.optDouble(JSONKey.AVG_RATING);
     }
 
     public User getUser() {
@@ -32,11 +32,11 @@ public class Review {
         return mAvgRating;
     }
 
-    public interface ApiField {
-        String API_FIELD_REVIEW_ITEMS = "Items";
-        String API_FIELD_REVIEW_OWNER = "Owner";
-        String API_FIELD_REVIEW_CREATED_TIME_DIFF = "CreatedOnTimeDiff";
-        String API_FIELD_REVIEW_DESCRIPTION = "Description";
-        String API_FIELD_REVIEW_AVG_RATING = "AvgRating";
+    public interface JSONKey {
+        String ITEMS = "Items";
+        String OWNER = "Owner";
+        String CREATED_TIME_DIFF = "CreatedOnTimeDiff";
+        String DESCRIPTION = "Description";
+        String AVG_RATING = "AvgRating";
     }
 }

@@ -8,8 +8,8 @@ public class User {
 
     public User(JSONObject jsonObject) {
         if (jsonObject == null) return;
-        mDisplayName = jsonObject.optString(ApiField.API_FIELD_REVIEW_DISPLAY_NAME);
-        mAvatar = jsonObject.optString(ApiField.API_FIELD_REVIEW_AVATAR);
+        mDisplayName = jsonObject.optString(JSONKey.DISPLAY_NAME);
+        mAvatar = jsonObject.optString(JSONKey.AVATAR);
     }
 
     public String getDisplayName() {
@@ -20,8 +20,8 @@ public class User {
         return mAvatar;
     }
 
-    public interface ApiField {
-        String API_FIELD_REVIEW_DISPLAY_NAME = "DisplayName";
-        String API_FIELD_REVIEW_AVATAR = "Avatar";
+    public interface JSONKey {
+        String DISPLAY_NAME = "DisplayName";
+        String AVATAR = "Avatar";
     }
 }

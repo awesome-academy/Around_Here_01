@@ -26,7 +26,7 @@ public class PlacesDownloadHandler extends BaseDataDownloadHandler<List<Place>> 
     public List<Place> parseRawToData(String in) throws JSONException {
         List<Place> places = new ArrayList<>();
         JSONObject reader = new JSONObject(in);
-        JSONArray itemsJson = reader.getJSONArray(Place.ApiField.API_FIELD_ITEMS);
+        JSONArray itemsJson = reader.getJSONArray(Place.JSONKey.ITEMS);
         for (int i = 0; i < itemsJson.length(); i++) {
             JSONObject itemJson = itemsJson.getJSONObject(i);
             places.add(new Place(itemJson));

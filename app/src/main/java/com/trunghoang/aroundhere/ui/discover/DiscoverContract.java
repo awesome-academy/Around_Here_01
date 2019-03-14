@@ -14,6 +14,8 @@ public interface DiscoverContract {
 
         void showLoadingPlacesError(Exception e);
 
+        void showLoadingIndicator(boolean isLoading);
+
         boolean isActive();
 
         boolean isLocationPermissionGranted();
