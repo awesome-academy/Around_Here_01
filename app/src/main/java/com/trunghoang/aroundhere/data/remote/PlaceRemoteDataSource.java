@@ -1,9 +1,10 @@
 package com.trunghoang.aroundhere.data.remote;
 
+import android.location.Location;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-import com.trunghoang.aroundhere.data.model.ApiHelper;
+import com.trunghoang.aroundhere.data.model.GlobalData;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceDataSource;
 import com.trunghoang.aroundhere.util.Constants;
@@ -36,9 +37,9 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
     }
 
     @Override
-    public void getPlaces(@NonNull LoadPlacesCallback callback) {
+    public void getPlaces(Location location, @NonNull LoadPlacesCallback callback) {
         DownloadTask downloadTask = new DownloadTask(callback);
-        downloadTask.execute(ApiHelper.getApiUrl());
+        downloadTask.execute(GlobalData.getInstance().buildPlacesApiUrl(location));
     }
 
     static class DownloadTask extends AsyncTask<String, Integer, List<Place>> {
@@ -121,21 +122,10 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
         private List<Place> parseRawDataToPlaces(String in) throws JSONException {
             List<Place> places = new ArrayList<>();
             JSONObject reader = new JSONObject(in);
-            JSONArray itemsJson = reader.getJSONArray(ApiHelper.API_FIELD_ITEMS);
+            JSONArray itemsJson = reader.getJSONArray(Place.ApiField.API_FIELD_ITEMS);
             for (int i = 0; i < itemsJson.length(); i++) {
                 JSONObject itemJson = itemsJson.getJSONObject(i);
-                double distance = itemJson.getDouble(ApiHelper.API_FIELD_DISTANCE);
-                boolean isOpen = itemJson.getBoolean(ApiHelper.API_FIELD_OPENING);
-                String photo = itemJson.getString(ApiHelper.API_FIELD_PHOTO);
-                String title = itemJson.getString(ApiHelper.API_FIELD_NAME);
-                String address = itemJson.getString(ApiHelper.API_FIELD_ADDRESS);
-                places.add(new Place.Builder()
-                        .setDistance(distance)
-                        .setOpen(isOpen)
-                        .setPhoto(photo)
-                        .setTitle(title)
-                        .setAddress(address)
-                        .build());
+                places.add(new Place(itemJson));
             }
             return places;
         }

@@ -3,6 +3,7 @@ package com.trunghoang.aroundhere.ui.discover;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
@@ -26,15 +30,17 @@ import com.trunghoang.aroundhere.ui.adapter.PlacesAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscoverFragment extends Fragment implements DiscoverContract.View {
+public class DiscoverFragment extends Fragment implements DiscoverContract.View,
+        OnSuccessListener<Location> {
 
     private static final int PERMISSION_REQUEST_FINE_LOCATION = 0;
     private static final String[] PERMISSIONS = {
-        Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
     private DiscoverContract.Presenter mPresenter;
     private Context mContext;
     private View mRootView;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlacesAdapter mPlacesAdapter;
     private TextView mSearchCount;
 
@@ -59,6 +65,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPlacesAdapter = new PlacesAdapter(getActivity(), new ArrayList<Place>());
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
     }
 
     @Override
@@ -98,7 +105,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View 
         if (requestCode != PERMISSION_REQUEST_FINE_LOCATION) return;
         if (grantResults.length == PERMISSIONS.length
                 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            mPresenter.start();
+            detectLocation();
         } else {
             //TODO: Show request failed status
         }
@@ -134,6 +141,22 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View 
     @Override
     public void requestLocationPermission() {
         requestPermissions(PERMISSIONS, PERMISSION_REQUEST_FINE_LOCATION);
+    }
+
+    @Override
+    public void onSuccess(Location location) {
+        mPresenter.loadPlaces(location);
+    }
+
+    @Override
+    public void detectLocation() {
+        if (getActivity() == null) return;
+        if (isLocationPermissionGranted()) {
+            mFusedLocationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), this);
+        } else {
+            requestLocationPermission();
+        }
     }
 
     private void showSearchResultCount(int number) {
