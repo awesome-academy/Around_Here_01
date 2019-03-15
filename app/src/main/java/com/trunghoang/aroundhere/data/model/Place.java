@@ -30,7 +30,7 @@ public class Place implements Parcelable {
     private String mEndTime;
     private String mResId;
     private String mDetailUrl;
-    private boolean mIsFavorited;
+    private boolean mIsFavored;
     private boolean mIsCheckedIn;
 
     private Place(double distance,
@@ -44,7 +44,7 @@ public class Place implements Parcelable {
                  String endTime,
                  String resId,
                  String detailUrl,
-                 boolean isFavorited,
+                 boolean isFavored,
                  boolean isCheckedIn) {
         mDistance = distance;
         mIsOpen = isOpen;
@@ -57,7 +57,7 @@ public class Place implements Parcelable {
         mEndTime = endTime;
         mResId = resId;
         mDetailUrl = detailUrl;
-        mIsFavorited = isFavorited;
+        mIsFavored = isFavored;
         mIsCheckedIn = isCheckedIn;
     }
 
@@ -73,7 +73,7 @@ public class Place implements Parcelable {
         mEndTime = parcel.readString();
         mResId = parcel.readString();
         mDetailUrl = parcel.readString();
-        mIsFavorited = (parcel.readInt() == 1);
+        mIsFavored = (parcel.readInt() == 1);
         mIsCheckedIn = (parcel.readInt() == 1);
     }
 
@@ -175,12 +175,12 @@ public class Place implements Parcelable {
         mDetailUrl = detailUrl;
     }
 
-    public boolean isFavorited() {
-        return mIsFavorited;
+    public boolean isFavored() {
+        return mIsFavored;
     }
 
-    public void setFavorited(boolean favorited) {
-        mIsFavorited = favorited;
+    public void setFavored(boolean favored) {
+        mIsFavored = favored;
     }
 
     public boolean isCheckedIn() {
@@ -209,7 +209,7 @@ public class Place implements Parcelable {
         dest.writeString(mEndTime);
         dest.writeString(mResId);
         dest.writeString(mDetailUrl);
-        dest.writeInt(mIsFavorited ? 1 : 0);
+        dest.writeInt(mIsFavored ? 1 : 0);
         dest.writeInt(mIsCheckedIn ? 1 : 0);
     }
 
@@ -225,7 +225,7 @@ public class Place implements Parcelable {
         private String mEndTime;
         private String mResId;
         private String mDetailUrl;
-        private boolean mIsFavorited;
+        private boolean mIsFavored;
         private boolean mIsCheckedIn;
 
         public Builder() {
@@ -286,8 +286,8 @@ public class Place implements Parcelable {
             return this;
         }
 
-        public Builder setFavorited(boolean favorited) {
-            mIsFavorited = favorited;
+        public Builder setFavored(boolean favored) {
+            mIsFavored = favored;
             return this;
         }
 
@@ -308,7 +308,7 @@ public class Place implements Parcelable {
                     mEndTime,
                     mResId,
                     mDetailUrl,
-                    mIsFavorited,
+                    mIsFavored,
                     mIsCheckedIn);
         }
     }
