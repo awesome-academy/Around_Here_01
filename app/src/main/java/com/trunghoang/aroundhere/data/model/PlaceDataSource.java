@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface PlaceDataSource {
     void getPlaces(Location location, @NonNull OnDataLoadedCallback<List<Place>> callback);
-    /*void getPlace(@NonNull OnDataLoadedCallback<Place> callback);*/
+    void getPlace(String placeUrl, @NonNull OnDataLoadedCallback<Place> callback);
+    void getReviews(String resId, @NonNull OnDataLoadedCallback<List<Review>> callback);
 }

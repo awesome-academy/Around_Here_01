@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,6 +32,7 @@ import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.PlaceClickListener;
 import com.trunghoang.aroundhere.ui.adapter.PlacesAdapter;
 import com.trunghoang.aroundhere.ui.place.PlaceActivity;
+import com.trunghoang.aroundhere.util.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -78,19 +80,20 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_discover, container, false);
         mSearchCount = mRootView.findViewById(R.id.text_search_count);
-        showSearchResultCount(0);
         final RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_place_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(mPlacesAdapter);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerView.addOnItemTouchListener(new PlaceClickListener(mContext,
                 new PlaceClickListener.OnPlaceClickCallback() {
-                    @Override
-                    public void onSingleTapUp(MotionEvent e) {
-                        View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                        showPlaceActivity();
-                    }
-                }));
+            @Override
+            public void onSingleTapUp(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child == null) return;
+                int adapterPosition = recyclerView.getChildAdapterPosition(child);
+                showPlaceActivity(mPlacesAdapter.getItemAtPosition(adapterPosition));
+            }
+        }));
         mPresenter.start();
         return mRootView;
     }
@@ -131,13 +134,22 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     @Override
     public void showPlaces(List<Place> places) {
-        mPlacesAdapter.setPlaces(places);
+        showLoadingIndicator(false);
+        mPlacesAdapter.setData(places);
         showSearchResultCount(places.size());
     }
 
     @Override
     public void showLoadingPlacesError(Exception e) {
+        showLoadingIndicator(false);
+        mSearchCount.setVisibility(View.VISIBLE);
         mSearchCount.setText(e.getMessage());
+    }
+
+    @Override
+    public void showLoadingIndicator(boolean isLoading) {
+        ProgressBar progressBar = mRootView.findViewById(R.id.progress_places);
+        progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -172,12 +184,14 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         }
     }
 
-    private void showPlaceActivity() {
+    private void showPlaceActivity(Place place) {
         Intent intent = new Intent(mContext, PlaceActivity.class);
+        intent.putExtra(Constants.EXTRA_PLACE, place);
         startActivity(intent);
     }
 
     private void showSearchResultCount(int number) {
+        mSearchCount.setVisibility(View.VISIBLE);
         mSearchCount.setText(getString(R.string.sample_search_count, number));
     }
 }

@@ -203,21 +203,32 @@
                 android:layout_marginTop="@dimen/place_detail_margin_top"
                 android:layout_marginEnd="@dimen/place_detail_reviews_margin_right"
                 android:layout_marginRight="@dimen/place_detail_reviews_margin_right"
-                app:layout_constraintBottom_toBottomOf="@id/constraint_container"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/text_review_title"
                 app:layout_constraintTop_toBottomOf="@+id/text_review_title"
                 tools:listitem="@layout/item_reviews" />
 
             <TextView
-                android:id="@+id/text_load_reviews_status"
+                android:id="@+id/text_no_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/place_detail_margin_left"
                 android:layout_marginLeft="@dimen/place_detail_margin_left"
                 android:layout_marginTop="@dimen/place_detail_main_info_margin_vertical"
+                android:text="@string/place_detail_no_review"
                 android:visibility="gone"
                 app:layout_constraintStart_toStartOf="@+id/text_review_title"
+                app:layout_constraintTop_toBottomOf="@+id/text_review_title" />
+
+            <ProgressBar
+                android:id="@+id/progress_reviews"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/place_detail_margin_top"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/text_review_title" />
 
         </android.support.constraint.ConstraintLayout>

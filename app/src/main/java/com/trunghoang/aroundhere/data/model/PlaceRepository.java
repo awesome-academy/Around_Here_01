@@ -25,13 +25,18 @@ public class PlaceRepository implements PlaceDataSource {
         getPlacesFromRemote(location, callback);
     }
 
-    /*@Override
-    public void getPlace(@NonNull OnDataLoadedCallback<Place> callback) {
-        mRemote.getPlace(callback);
-    }*/
+    @Override
+    public void getPlace(String placeUrl, @NonNull OnDataLoadedCallback<Place> callback) {
+        mRemote.getPlace(placeUrl, callback);
+    }
+
+    @Override
+    public void getReviews(String resId, @NonNull OnDataLoadedCallback<List<Review>> callback) {
+        mRemote.getReviews(resId, callback);
+    }
 
     private void getPlacesFromRemote(Location location,
-                                     @NonNull OnDataLoadedCallback<List<Place>> callback) {
+            @NonNull OnDataLoadedCallback<List<Place>> callback) {
         mRemote.getPlaces(location, callback);
     }
 }
