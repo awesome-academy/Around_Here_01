@@ -1,8 +1,7 @@
 package com.trunghoang.aroundhere.ui.discover;
 
-import android.location.Location;
-
 import com.trunghoang.aroundhere.data.model.Place;
+import com.trunghoang.aroundhere.data.model.SearchParams;
 import com.trunghoang.aroundhere.ui.BasePresenter;
 import com.trunghoang.aroundhere.ui.BaseView;
 
@@ -26,6 +25,6 @@ public interface DiscoverContract {
     }
 
     interface Presenter extends BasePresenter {
-        void loadPlaces(Location location);
+        void loadPlaces(SearchParams searchParams);
     }
 }

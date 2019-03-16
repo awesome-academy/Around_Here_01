@@ -19,7 +19,7 @@ public class GlobalData {
         PROVINCES = Collections.unmodifiableMap(mapProvinces);
     }
 
-    private String mPage;
+    private String mPage = PlacesKey.DEFAULT_PAGE;
 
     private GlobalData() {
     }
@@ -41,17 +41,22 @@ public class GlobalData {
         mPage = page;
     }
 
-    public String buildPlacesApiUrl(Location location) {
+    public String buildPlacesApiUrl(SearchParams searchParams) {
         String lat, lon;
-        if (location == null) {
+        if (searchParams.getLocation() == null) {
             lat = String.valueOf(PlacesKey.DEFAULT_LAT);
             lon = String.valueOf(PlacesKey.DEFAULT_LON);
         } else {
-            lat = String.valueOf(location.getLatitude());
-            lon = String.valueOf(location.getLongitude());
+            lat = String.valueOf(searchParams.getLocation().getLatitude());
+            lon = String.valueOf(searchParams.getLocation().getLongitude());
         }
-        String provinceId = getProvinceId(location);
+        String provinceId = searchParams.getLocation() == null ?
+                PlacesKey.DEFAULT_PROVINCE_ID :
+                getProvinceId(searchParams.getLocation());
         String provincePath = getProvince(provinceId);
+        String query = searchParams.getQuery() == null ?
+                PlacesKey.DEFAULT_Q :
+                searchParams.getQuery();
         return new Uri.Builder()
                 .scheme(Constants.SCHEME_HTTPS)
                 .authority(Constants.API_BASE_URL)
@@ -60,11 +65,11 @@ public class GlobalData {
                 .appendQueryParameter(PlacesKey.API_QUERY_DS, PlacesKey.DEFAULT_DS)
                 .appendQueryParameter(PlacesKey.API_QUERY_VT, PlacesKey.DEFAULT_VT)
                 .appendQueryParameter(PlacesKey.API_QUERY_ST, PlacesKey.DEFAULT_ST)
-                .appendQueryParameter(PlacesKey.API_QUERY_Q, PlacesKey.DEFAULT_Q)
+                .appendQueryParameter(PlacesKey.API_QUERY_Q, query)
                 .appendQueryParameter(PlacesKey.API_QUERY_LAT, lat)
                 .appendQueryParameter(PlacesKey.API_QUERY_LON, lon)
                 .appendQueryParameter(PlacesKey.API_QUERY_PAGE, mPage)
-                .appendQueryParameter(PlacesKey.API_QUERY_PROVINCEID, provinceId)
+                .appendQueryParameter(PlacesKey.API_QUERY_PROVINCE_ID, provinceId)
                 .appendQueryParameter(PlacesKey.API_QUERY_APPEND, PlacesKey.DEFAULT_APPEND)
                 .build()
                 .toString();
@@ -76,16 +81,16 @@ public class GlobalData {
                 .authority(Constants.API_BASE_URL)
                 .appendPath(ReviewsKey.API_PATH_GET)
                 .appendPath(ReviewsKey.API_PATH_REVIEW)
-                .appendPath(ReviewsKey.API_PATH_RESLOADMORE)
+                .appendPath(ReviewsKey.API_PATH_RES_LOAD_MORE)
                 .appendQueryParameter(ReviewsKey.API_QUERY_RES_ID, resId)
                 .appendQueryParameter(ReviewsKey.API_QUERY_COUNT, ReviewsKey.DEFAULT_REVIEW_COUNT)
                 .appendQueryParameter(ReviewsKey.API_QUERY_TYPE, ReviewsKey.DEFAULT_REVIEW_TYPE)
                 .appendQueryParameter(ReviewsKey.API_QUERY_FROM_OWNER,
                         ReviewsKey.DEFAULT_FROM_OWNER)
-                .appendQueryParameter(ReviewsKey.API_QUERY_IS_LASTEST,
-                        ReviewsKey.DEFAULT_REVIEW_IS_LASTEST)
-                .appendQueryParameter(ReviewsKey.API_QUERY_EXCLUDEIDS,
-                        ReviewsKey.DEFAULT_REVIEW_EXCLUDEIDS)
+                .appendQueryParameter(ReviewsKey.ADI_QUERY_IS_LATEST,
+                        ReviewsKey.DEFAULT_REVIEW_IS_LATEST)
+                .appendQueryParameter(ReviewsKey.API_QUERY_EXCLUDE_IDS,
+                        ReviewsKey.DEFAULT_REVIEW_EXCLUDE_IDS)
                 .build()
                 .toString();
     }
@@ -104,25 +109,25 @@ public class GlobalData {
     }
 
     private String getProvinceId(Location location) {
-        return PlacesKey.DEFAULT_PROVINCEID;
+        return PlacesKey.DEFAULT_PROVINCE_ID;
     }
 
     interface ReviewsKey {
         String API_PATH_GET = "__get";
         String API_PATH_REVIEW = "Review";
-        String API_PATH_RESLOADMORE = "ResLoadMore";
+        String API_PATH_RES_LOAD_MORE = "ResLoadMore";
         String API_QUERY_RES_ID = "ResId";
         String API_QUERY_COUNT = "Count";
         String API_QUERY_TYPE = "Type";
         String API_QUERY_FROM_OWNER = "fromOwner";
-        String API_QUERY_IS_LASTEST = "isLatest";
-        String API_QUERY_EXCLUDEIDS = "ExcludeIds";
+        String ADI_QUERY_IS_LATEST = "isLatest";
+        String API_QUERY_EXCLUDE_IDS = "ExcludeIds";
         String DEFAULT_REVIEW_RES_ID = "";
         String DEFAULT_REVIEW_COUNT = "10";
         String DEFAULT_REVIEW_TYPE = "1";
         String DEFAULT_FROM_OWNER = "";
-        String DEFAULT_REVIEW_IS_LASTEST = "true";
-        String DEFAULT_REVIEW_EXCLUDEIDS = "";
+        String DEFAULT_REVIEW_IS_LATEST = "true";
+        String DEFAULT_REVIEW_EXCLUDE_IDS = "";
     }
 
     interface PlacesKey {
@@ -133,8 +138,8 @@ public class GlobalData {
         String API_QUERY_LAT = "lat";
         String API_QUERY_LON = "lon";
         String API_QUERY_PAGE = "page";
-        String API_QUERY_PROVINCEID = "provinceId";
-        String API_QUERY_CATEGORYID = "categoryId";
+        String API_QUERY_PROVINCE_ID = "provinceId";
+        String API_QUERY_CATEGORY_ID = "categoryId";
         String API_QUERY_APPEND = "append";
         String DEFAULT_DS = "Restaurant";
         String DEFAULT_VT = "row";
@@ -143,7 +148,7 @@ public class GlobalData {
         double DEFAULT_LAT = 21.006887;
         double DEFAULT_LON = 105.7992413;
         String DEFAULT_PAGE = "1";
-        String DEFAULT_PROVINCEID = "218";
+        String DEFAULT_PROVINCE_ID = "218";
         String DEFAULT_APPEND = "true";
     }
 }

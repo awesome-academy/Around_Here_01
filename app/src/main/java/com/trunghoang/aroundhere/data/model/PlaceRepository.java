@@ -1,7 +1,6 @@
 package com.trunghoang.aroundhere.data.model;
 
 import android.content.Context;
-import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.db.AppDatabase;
@@ -32,8 +31,8 @@ public class PlaceRepository implements PlaceDataSource {
     }
 
     @Override
-    public void getPlaces(Location location, @NonNull OnDataLoadedCallback<List<Place>> callback) {
-        if (location != null) getPlacesFromRemote(location, callback);
+    public void getPlaces(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Place>> callback) {
+        if (searchParams != null) getPlacesFromRemote(searchParams, callback);
     }
 
     @Override
@@ -77,9 +76,9 @@ public class PlaceRepository implements PlaceDataSource {
         updatePlaceTask.execute(place);
     }
 
-    private void getPlacesFromRemote(Location location,
+    private void getPlacesFromRemote(SearchParams searchParams,
             @NonNull OnDataLoadedCallback<List<Place>> callback) {
-        mRemote.getPlaces(location, callback);
+        mRemote.getPlaces(searchParams, callback);
     }
 
 }

@@ -8,6 +8,7 @@ import com.trunghoang.aroundhere.data.model.OnDataLoadedCallback;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceDataSource;
 import com.trunghoang.aroundhere.data.model.Review;
+import com.trunghoang.aroundhere.data.model.SearchParams;
 
 import java.util.List;
 
@@ -25,9 +26,9 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
     }
 
     @Override
-    public void getPlaces(Location location, @NonNull OnDataLoadedCallback<List<Place>> callback) {
+    public void getPlaces(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Place>> callback) {
         DownloadTask<List<Place>> downloadTask = new DownloadTask<>(new PlacesDownloadHandler(), callback);
-        downloadTask.execute(GlobalData.getInstance().buildPlacesApiUrl(location));
+        downloadTask.execute(GlobalData.getInstance().buildPlacesApiUrl(searchParams));
     }
 
     @Override

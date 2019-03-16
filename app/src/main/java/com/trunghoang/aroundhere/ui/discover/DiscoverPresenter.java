@@ -1,11 +1,11 @@
 package com.trunghoang.aroundhere.ui.discover;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.OnDataLoadedCallback;
+import com.trunghoang.aroundhere.data.model.SearchParams;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class DiscoverPresenter implements DiscoverContract.Presenter {
     }
 
     @Override
-    public void loadPlaces(Location location) {
+    public void loadPlaces(SearchParams searchParams) {
         mView.showLoadingIndicator(true);
-        mPlaceRepository.getPlaces(location, new OnDataLoadedCallback<List<Place>>() {
+        mPlaceRepository.getPlaces(searchParams, new OnDataLoadedCallback<List<Place>>() {
             @Override
             public void onDataLoaded(List<Place> places) {
                 if (!mView.isActive()) return;
