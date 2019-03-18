@@ -1,6 +1,7 @@
 package com.trunghoang.aroundhere.ui.discover;
 
 import android.Manifest;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,6 +12,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +31,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
+import com.trunghoang.aroundhere.data.model.SearchParams;
 import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.PlaceClickListener;
 import com.trunghoang.aroundhere.ui.adapter.PlacesAdapter;
@@ -50,13 +54,22 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlacesAdapter mPlacesAdapter;
     private TextView mSearchCount;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private String mQuery;
+    private OnFragmentInteractionListener mListener;
 
     public DiscoverFragment() {
         // Required empty public constructor
     }
 
-    public static DiscoverFragment newInstance() {
-        return new DiscoverFragment();
+    public static DiscoverFragment newInstance(String query) {
+        DiscoverFragment discoverFragment = new DiscoverFragment();
+        if (query != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString(SearchManager.QUERY, query);
+            discoverFragment.setArguments(bundle);
+        }
+        return discoverFragment;
     }
 
     @Override
@@ -67,6 +80,9 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                 PlaceRepository.getInstance(getActivity().getApplicationContext(),
                         PlaceRemoteDataSource.getInstance()),
                 this);
+        if (mContext instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) mContext;
+        }
     }
 
     @Override
@@ -74,6 +90,9 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         super.onCreate(savedInstanceState);
         mPlacesAdapter = new PlacesAdapter(getActivity(), new ArrayList<Place>());
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(mContext);
+        if (getArguments() != null) {
+            mQuery = getArguments().getString(SearchManager.QUERY);
+        }
     }
 
     @Override
@@ -81,20 +100,15 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_discover, container, false);
         mSearchCount = mRootView.findViewById(R.id.text_search_count);
-        final RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_place_list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mPlacesAdapter);
-        recyclerView.setNestedScrollingEnabled(false);
-        recyclerView.addOnItemTouchListener(new PlaceClickListener(mContext,
-                new PlaceClickListener.OnPlaceClickCallback() {
-            @Override
-            public void onSingleTapUp(MotionEvent e) {
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child == null) return;
-                int adapterPosition = recyclerView.getChildAdapterPosition(child);
-                showPlaceActivity(mPlacesAdapter.getItemAtPosition(adapterPosition));
-            }
-        }));
+        View searchContainer = mRootView.findViewById(R.id.constraint_search_container);
+        searchContainer.setOnClickListener(new OnInteractionListener());
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new OnInteractionListener());
+        initRecyclerView();
+        if (mQuery != null) {
+            TextView textSearch = mRootView.findViewById(R.id.text_search_hint);
+            textSearch.setText(mQuery);
+        }
         mPresenter.start();
         return mRootView;
     }
@@ -103,14 +117,9 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (mContext instanceof AppCompatActivity) {
-            View rootView = getView();
             AppCompatActivity appCompatActivity = (AppCompatActivity) mContext;
-            if (rootView != null) {
-                Toolbar toolbar = rootView.findViewById(R.id.toolbar_discover);
-                appCompatActivity.setSupportActionBar(toolbar);
-                if (appCompatActivity.getSupportActionBar() != null) {
-                    appCompatActivity.getSupportActionBar().setTitle(null);
-                }
+            if (mRootView != null) {
+                initToolbar(appCompatActivity, mRootView);
             }
         }
     }
@@ -171,7 +180,10 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     @Override
     public void onSuccess(Location location) {
-        mPresenter.loadPlaces(location);
+        SearchParams searchParams = new SearchParams();
+        searchParams.setLocation(location);
+        searchParams.setQuery(mQuery);
+        mPresenter.loadPlaces(searchParams);
     }
 
     @Override
@@ -185,6 +197,33 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         }
     }
 
+    private void initToolbar(AppCompatActivity parent, View rootView) {
+        Toolbar toolbar = rootView.findViewById(R.id.toolbar_discover);
+        parent.setSupportActionBar(toolbar);
+        if (parent.getSupportActionBar() != null) {
+            ActionBar actionBar = parent.getSupportActionBar();
+            actionBar.setTitle(null);
+            actionBar.setDisplayHomeAsUpEnabled(mQuery != null);
+        }
+    }
+
+    private void initRecyclerView() {
+        final RecyclerView recyclerView = mRootView.findViewById(R.id.recycler_place_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mPlacesAdapter);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addOnItemTouchListener(new PlaceClickListener(mContext,
+                new PlaceClickListener.OnPlaceClickCallback() {
+                    @Override
+                    public void onSingleTapUp(MotionEvent e) {
+                        View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                        if (child == null) return;
+                        int adapterPosition = recyclerView.getChildAdapterPosition(child);
+                        showPlaceActivity(mPlacesAdapter.getItemAtPosition(adapterPosition));
+                    }
+                }));
+    }
+
     private void showPlaceActivity(Place place) {
         Intent intent = new Intent(mContext, PlaceActivity.class);
         intent.putExtra(Constants.EXTRA_PLACE, place);
@@ -194,5 +233,27 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     private void showSearchResultCount(int number) {
         mSearchCount.setVisibility(View.VISIBLE);
         mSearchCount.setText(getString(R.string.sample_search_count, number));
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onSearchClick(String lastQuery);
+    }
+
+    private class OnInteractionListener implements View.OnClickListener,
+            SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.constraint_search_container:
+                    mListener.onSearchClick(mQuery);
+                    break;
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            detectLocation();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 }
