@@ -10,15 +10,15 @@ public class PlaceEntity {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = PlaceKey.ID)
-    private String resId;
+    private String mResId;
     @ColumnInfo(name = PlaceKey.PHOTO)
-    private String photo;
+    private String mPhoto;
     @ColumnInfo(name = PlaceKey.TITLE)
-    private String title;
+    private String mTitle;
     @ColumnInfo(name = PlaceKey.ADDRESS)
-    private String address;
+    private String mAddress;
     @ColumnInfo(name = PlaceKey.DETAIL_URL)
-    private String detailUrl;
+    private String mDetailUrl;
     @ColumnInfo(name = PlaceKey.IS_FAVORED)
     private boolean isFavored;
     @ColumnInfo(name = PlaceKey.IS_CHECKED)
@@ -28,43 +28,43 @@ public class PlaceEntity {
     }
 
     public String getResId() {
-        return resId;
+        return mResId;
     }
 
     public void setResId(String resId) {
-        this.resId = resId;
+        this.mResId = resId;
     }
 
     public String getPhoto() {
-        return photo;
+        return mPhoto;
     }
 
     public void setPhoto(String photo) {
-        this.photo = photo;
+        this.mPhoto = photo;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.mTitle = title;
     }
 
     public String getAddress() {
-        return address;
+        return mAddress;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.mAddress = address;
     }
 
     public String getDetailUrl() {
-        return detailUrl;
+        return mDetailUrl;
     }
 
     public void setDetailUrl(String detailUrl) {
-        this.detailUrl = detailUrl;
+        this.mDetailUrl = detailUrl;
     }
 
     public boolean isFavored() {
