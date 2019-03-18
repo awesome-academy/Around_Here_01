@@ -65,10 +65,13 @@ public class PlaceRepository implements PlaceDataSource {
             public Place execute(Place[] places, PlaceDAO placeDao) {
                 if (places == null || places.length == 0) return null;
                 PlaceEntity entity = new PlaceEntity();
-                entity.setResId(places[0].getResId());
-                entity.setFavored(places[0].isFavored());
+                Place sourcePlace = places[0];
+                entity.setResId(sourcePlace.getResId());
+                entity.setIsFavored(sourcePlace.isFavored());
+                entity.setIsCheckedIn(sourcePlace.isCheckedIn());
+                entity.setCheckedInTime(sourcePlace.getCheckedInTime());
                 mPlaceDAO.upsert(entity);
-                return places[0];
+                return sourcePlace;
             }
         }, mPlaceDAO, callback);
         updatePlaceTask.execute(place);

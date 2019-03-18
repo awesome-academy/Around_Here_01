@@ -32,33 +32,9 @@ public class Place implements Parcelable {
     private String mDetailUrl;
     private boolean mIsFavored;
     private boolean mIsCheckedIn;
+    private long mCheckedInTime;
 
-    private Place(double distance,
-                 boolean isOpen,
-                 String photo,
-                 String title,
-                 String address,
-                 long priceMin,
-                 long priceMax,
-                 String startTime,
-                 String endTime,
-                 String resId,
-                 String detailUrl,
-                 boolean isFavored,
-                 boolean isCheckedIn) {
-        mDistance = distance;
-        mIsOpen = isOpen;
-        mPhoto = photo;
-        mTitle = title;
-        mAddress = address;
-        mPriceMin = priceMin;
-        mPriceMax = priceMax;
-        mStartTime = startTime;
-        mEndTime = endTime;
-        mResId = resId;
-        mDetailUrl = detailUrl;
-        mIsFavored = isFavored;
-        mIsCheckedIn = isCheckedIn;
+    public Place() {
     }
 
     public Place(Parcel parcel) {
@@ -75,6 +51,7 @@ public class Place implements Parcelable {
         mDetailUrl = parcel.readString();
         mIsFavored = (parcel.readInt() == 1);
         mIsCheckedIn = (parcel.readInt() == 1);
+        mCheckedInTime = parcel.readLong();
     }
 
     public Place(JSONObject jsonObject) {
@@ -91,7 +68,7 @@ public class Place implements Parcelable {
         return mDistance;
     }
 
-    public void setDistance(long distance) {
+    public void setDistance(double distance) {
         mDistance = distance;
     }
 
@@ -191,6 +168,14 @@ public class Place implements Parcelable {
         mIsCheckedIn = checkedIn;
     }
 
+    public long getCheckedInTime() {
+        return mCheckedInTime;
+    }
+
+    public void setCheckedInTime(long checkedInTime) {
+        mCheckedInTime = checkedInTime;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -211,6 +196,7 @@ public class Place implements Parcelable {
         dest.writeString(mDetailUrl);
         dest.writeInt(mIsFavored ? 1 : 0);
         dest.writeInt(mIsCheckedIn ? 1 : 0);
+        dest.writeLong(mCheckedInTime);
     }
 
     public static class Builder {
@@ -227,6 +213,7 @@ public class Place implements Parcelable {
         private String mDetailUrl;
         private boolean mIsFavored;
         private boolean mIsCheckedIn;
+        private long mCheckedInTime;
 
         public Builder() {
         }
@@ -296,20 +283,28 @@ public class Place implements Parcelable {
             return this;
         }
 
+        public Builder setCheckedInTime(long checkedInTime) {
+            mCheckedInTime = checkedInTime;
+            return this;
+        }
+
         public Place build() {
-            return new Place(mDistance,
-                    mIsOpen,
-                    mPhoto,
-                    mTitle,
-                    mAddress,
-                    mPriceMin,
-                    mPriceMax,
-                    mStartTime,
-                    mEndTime,
-                    mResId,
-                    mDetailUrl,
-                    mIsFavored,
-                    mIsCheckedIn);
+            Place place = new Place();
+            place.setDistance(mDistance);
+            place.setOpen(mIsOpen);
+            place.setPhoto(mPhoto);
+            place.setTitle(mTitle);
+            place.setAddress(mAddress);
+            place.setPriceMin(mPriceMin);
+            place.setPriceMax(mPriceMax);
+            place.setStartTime(mStartTime);
+            place.setEndTime(mEndTime);
+            place.setResId(mResId);
+            place.setDetailUrl(mDetailUrl);
+            place.setFavored(mIsFavored);
+            place.setCheckedIn(mIsCheckedIn);
+            place.setCheckedInTime(mCheckedInTime);
+            return place;
         }
     }
 

@@ -20,12 +20,11 @@ public class PlaceEntity {
     @ColumnInfo(name = PlaceKey.DETAIL_URL)
     private String mDetailUrl;
     @ColumnInfo(name = PlaceKey.IS_FAVORED)
-    private boolean isFavored;
+    private boolean mIsFavored;
     @ColumnInfo(name = PlaceKey.IS_CHECKED)
-    private boolean isCheckedIn;
-
-    public PlaceEntity() {
-    }
+    private boolean mIsCheckedIn;
+    @ColumnInfo(name = PlaceKey.CHECKED_TIME)
+    private long mCheckedInTime;
 
     public String getResId() {
         return mResId;
@@ -68,20 +67,30 @@ public class PlaceEntity {
     }
 
     public boolean isFavored() {
-        return isFavored;
+        return mIsFavored;
     }
 
-    public void setFavored(boolean favored) {
-        this.isFavored = favored;
+    public void setIsFavored(boolean favored) {
+        this.mIsFavored = favored;
     }
 
     public boolean isCheckedIn() {
-        return isCheckedIn;
+        return mIsCheckedIn;
     }
 
-    public void setCheckedIn(boolean checkedIn) {
-        isCheckedIn = checkedIn;
+    public void setIsCheckedIn(boolean checkedIn) {
+        mIsCheckedIn = checkedIn;
     }
+
+    public long getCheckedInTime() {
+        return mCheckedInTime;
+    }
+
+    public void setCheckedInTime(long checkedInTime) {
+        mCheckedInTime = checkedInTime;
+    }
+
+    public PlaceEntity() { }
 
     interface PlaceKey {
         String TABLE = "place_table";
@@ -92,5 +101,6 @@ public class PlaceEntity {
         String DETAIL_URL = "place_detail_url";
         String IS_FAVORED = "place_is_favored";
         String IS_CHECKED = "place_is_checked";
+        String CHECKED_TIME = "place_checked_time";
     }
 }
