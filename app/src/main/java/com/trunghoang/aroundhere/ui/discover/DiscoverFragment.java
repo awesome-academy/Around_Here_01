@@ -54,6 +54,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private PlacesAdapter mPlacesAdapter;
     private TextView mSearchCount;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private String mQuery;
     private OnFragmentInteractionListener mListener;
 
@@ -100,20 +101,9 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         mRootView = inflater.inflate(R.layout.fragment_discover, container, false);
         mSearchCount = mRootView.findViewById(R.id.text_search_count);
         View searchContainer = mRootView.findViewById(R.id.constraint_search_container);
-        searchContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onSearchClick(mQuery);
-            }
-        });
-        final SwipeRefreshLayout swipeRefreshLayout = mRootView.findViewById(R.id.swipe_refresh_layout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                detectLocation();
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        searchContainer.setOnClickListener(new OnInteractionListener());
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new OnInteractionListener());
         initRecyclerView();
         if (mQuery != null) {
             TextView textSearch = mRootView.findViewById(R.id.text_search_hint);
@@ -247,5 +237,23 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     public interface OnFragmentInteractionListener {
         void onSearchClick(String lastQuery);
+    }
+
+    private class OnInteractionListener implements View.OnClickListener,
+            SwipeRefreshLayout.OnRefreshListener {
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.constraint_search_container:
+                    mListener.onSearchClick(mQuery);
+                    break;
+            }
+        }
+
+        @Override
+        public void onRefresh() {
+            detectLocation();
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
     }
 }
