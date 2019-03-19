@@ -1,5 +1,6 @@
 package com.trunghoang.aroundhere.ui.place;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -20,6 +21,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.trunghoang.aroundhere.R;
+import com.trunghoang.aroundhere.data.db.AppDatabase;
+import com.trunghoang.aroundhere.data.db.PlaceDAO;
+import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.Review;
@@ -52,9 +56,13 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
             place = intent.getParcelableExtra(Constants.EXTRA_PLACE);
             bindInitView(place);
         }
+        Context appContext = getApplicationContext();
+        PlaceDAO placeDAO = AppDatabase.getInstance(appContext).placeDAO();
         mPresenter = new PlacePresenter(place,
-                PlaceRepository.getInstance(getApplicationContext(),
-                        PlaceRemoteDataSource.getInstance()), this);
+                PlaceRepository.getInstance(placeDAO,
+                        PlaceRemoteDataSource.getInstance(),
+                        PlaceLocalDataSource.getInstance(placeDAO)),
+                this);
         mPresenter.start();
     }
 

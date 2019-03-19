@@ -1,6 +1,5 @@
 package com.trunghoang.aroundhere.data.remote;
 
-import android.location.Location;
 import android.support.annotation.NonNull;
 
 import com.trunghoang.aroundhere.data.model.GlobalData;
@@ -32,15 +31,23 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
     }
 
     @Override
-    public void getPlace(String placeUrl, @NonNull OnDataLoadedCallback<Place> callback) {
+    public void getPlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
         DownloadTask<Place> downloadTask = new DownloadTask<>(new PlaceDownloadHandler(), callback);
-        downloadTask.execute(GlobalData.getInstance().getPlaceApiUrl(placeUrl));
+        downloadTask.execute(GlobalData.getInstance().getPlaceApiUrl(searchParams));
     }
 
     @Override
-    public void getReviews(String resId, @NonNull OnDataLoadedCallback<List<Review>> callback) {
+    public void getReviews(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Review>> callback) {
         DownloadTask<List<Review>> downloadTask = new DownloadTask<>(new ReviewsDownloadHandler(),
                 callback);
-        downloadTask.execute(GlobalData.getInstance().getReviewsApiUrl(resId));
+        downloadTask.execute(GlobalData.getInstance().getReviewsApiUrl(searchParams));
+    }
+
+    @Override
+    public void getFavoredPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+    }
+
+    @Override
+    public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
     }
 }

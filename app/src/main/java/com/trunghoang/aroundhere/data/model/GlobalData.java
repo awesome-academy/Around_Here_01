@@ -75,14 +75,14 @@ public class GlobalData {
                 .toString();
     }
 
-    public String getReviewsApiUrl(String resId) {
+    public String getReviewsApiUrl(SearchParams searchParams) {
         return new Uri.Builder()
                 .scheme(Constants.SCHEME_HTTPS)
                 .authority(Constants.API_BASE_URL)
                 .appendPath(ReviewsKey.API_PATH_GET)
                 .appendPath(ReviewsKey.API_PATH_REVIEW)
                 .appendPath(ReviewsKey.API_PATH_RES_LOAD_MORE)
-                .appendQueryParameter(ReviewsKey.API_QUERY_RES_ID, resId)
+                .appendQueryParameter(ReviewsKey.API_QUERY_RES_ID, searchParams.getResId())
                 .appendQueryParameter(ReviewsKey.API_QUERY_COUNT, ReviewsKey.DEFAULT_REVIEW_COUNT)
                 .appendQueryParameter(ReviewsKey.API_QUERY_TYPE, ReviewsKey.DEFAULT_REVIEW_TYPE)
                 .appendQueryParameter(ReviewsKey.API_QUERY_FROM_OWNER,
@@ -95,11 +95,11 @@ public class GlobalData {
                 .toString();
     }
 
-    public String getPlaceApiUrl(String detailUrl) {
+    public String getPlaceApiUrl(SearchParams searchParams) {
         return new Uri.Builder()
                 .scheme(Constants.SCHEME_HTTPS)
                 .authority(Constants.API_BASE_URL)
-                .appendPath(detailUrl)
+                .appendPath(searchParams.getPlaceUrl())
                 .build()
                 .toString();
     }
