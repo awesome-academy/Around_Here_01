@@ -4,6 +4,7 @@ import com.trunghoang.aroundhere.data.model.OnDataLoadedCallback;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.Review;
+import com.trunghoang.aroundhere.data.model.SearchParams;
 import com.trunghoang.aroundhere.util.PlaceUpdateType;
 
 import java.util.Date;
@@ -89,7 +90,10 @@ public class PlacePresenter implements PlaceContract.Presenter {
 
     private void updateReviewsFromRemote() {
         mView.showLoadingIndicator(true);
-        mPlaceRepository.getReviews(mPlace.getResId(), new OnDataLoadedCallback<List<Review>>() {
+        SearchParams searchParams = new SearchParams();
+        searchParams.setRemote(true);
+        searchParams.setResId(mPlace.getResId());
+        mPlaceRepository.getReviews(searchParams, new OnDataLoadedCallback<List<Review>>() {
             @Override
             public void onDataLoaded(List<Review> data) {
                 processReviews(data);
@@ -103,7 +107,10 @@ public class PlacePresenter implements PlaceContract.Presenter {
     }
 
     private void updateTimePriceFromRemote() {
-        mPlaceRepository.getPlace(mPlace.getDetailUrl(), new OnDataLoadedCallback<Place>() {
+        SearchParams searchParams = new SearchParams();
+        searchParams.setRemote(true);
+        searchParams.setPlaceUrl(mPlace.getDetailUrl());
+        mPlaceRepository.getPlace(searchParams, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
                 processPlace(data);

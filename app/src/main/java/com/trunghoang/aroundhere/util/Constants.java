@@ -13,4 +13,9 @@ public class Constants {
     public static final String EXCEPTION_IO_NO_RESPONSE = "No response received";
     public static final String EXTRA_PLACE = "EXTRA_PLACE";
     public static final int DATABASE_VERSION = 1;
+
+    public static class FavoriteType {
+        public static final String ARG_VALUE_FAVORITES = "favorites";
+        public static final String ARG_VALUE_VISITED = "visited";
+    }
 }
