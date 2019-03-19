@@ -39,4 +39,6 @@
     <string name="place_detail_visited_removed">Removed from Visited Places</string>
     <string name="place_detail_unknown_update_code">Unknown update code</string>
     <string name="searchable_authority">com.trunghoang.aroundhere.service.SearchProvider</string>
+    <string name="favorites_title_favorites">Favorites</string>
+    <string name="favorites_title_visited">Visited Places</string>
 </resources>
