@@ -53,7 +53,7 @@ public class PlaceRepository implements PlaceDataSource {
 
     @Override
     public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
-        mLocal.getFavoredPlaces(callback);
+        mLocal.getVisitedPlaces(callback);
     }
 
     public void updatePlaceFromLocal(String resId,

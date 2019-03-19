@@ -41,4 +41,5 @@
     <string name="searchable_authority">com.trunghoang.aroundhere.service.SearchProvider</string>
     <string name="favorites_title_favorites">Favorites</string>
     <string name="favorites_title_visited">Visited Places</string>
+    <string name="local_loading_error">Something wrong with local database</string>
 </resources>

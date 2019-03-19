@@ -13,9 +13,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -209,8 +209,7 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         checkInButton.setClickable(!place.isCheckedIn());
         Chip chip = findViewById(R.id.chip_check_in);
         chip.setVisibility(place.isCheckedIn() ? View.VISIBLE : View.GONE);
-        chip.setText(getString(R.string.place_detail_visited,
-                DateUtils.getDateFromTime(place.getCheckedInTime())));
+        chip.setText(getString(R.string.place_detail_visited, DateUtils.getDateFromTime(place.getCheckedInTime())));
         chip.setOnCloseIconClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
