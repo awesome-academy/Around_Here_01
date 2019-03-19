@@ -34,6 +34,17 @@ public class PlaceLocalDataSource implements PlaceDataSource {
 
     @Override
     public void getPlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
+        if (searchParams.getResId() != null) {
+            DaoTask<String, Place> getPlaceTask = new DaoTask<>(new DaoHandler<String, Place>() {
+                @Override
+                public Place execute(String[] placeIds, PlaceDAO placeDao) {
+                    if (placeIds == null || placeIds.length == 0) return null;
+                    PlaceEntity entity = mPlaceDAO.getPlace(placeIds[0]);
+                    return PlaceEntityDataMapper.transform(entity);
+                }
+            }, mPlaceDAO, callback);
+            getPlaceTask.execute(searchParams.getResId());
+        }
     }
 
     @Override
@@ -62,5 +73,29 @@ public class PlaceLocalDataSource implements PlaceDataSource {
             }
         }, mPlaceDAO, callback);
         daoTask.execute();
+    }
+
+    public void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
+        if (searchParams.getPlace() != null) {
+            DaoTask<Place, Place> updatePlaceTask = new DaoTask<>(new DaoHandler<Place, Place>() {
+                @Override
+                public Place execute(Place[] places, PlaceDAO placeDao) {
+                    if (places == null || places.length == 0) return null;
+                    PlaceEntity entity = new PlaceEntity();
+                    Place sourcePlace = places[0];
+                    entity.setResId(sourcePlace.getResId());
+                    entity.setIsFavored(sourcePlace.isFavored());
+                    entity.setIsCheckedIn(sourcePlace.isCheckedIn());
+                    entity.setCheckedInTime(sourcePlace.getCheckedInTime());
+                    entity.setPhoto(sourcePlace.getPhoto());
+                    entity.setTitle(sourcePlace.getTitle());
+                    entity.setAddress(sourcePlace.getAddress());
+                    entity.setDetailUrl(sourcePlace.getDetailUrl());
+                    mPlaceDAO.upsert(entity);
+                    return places[0];
+                }
+            }, mPlaceDAO, callback);
+            updatePlaceTask.execute(searchParams.getPlace());
+        }
     }
 }

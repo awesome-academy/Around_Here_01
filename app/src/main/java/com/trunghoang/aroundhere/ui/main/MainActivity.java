@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private static final String TAG_DISCOVER = "discover";
     private String mLastQuery;
+    private BottomNavigationView mBottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +67,17 @@ public class MainActivity extends AppCompatActivity implements
         if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
             finish();
         } else {
-            super.onBackPressed();
+            if (mBottomNavigationView.getSelectedItemId() != R.id.item_discover) {
+                mBottomNavigationView.setSelectedItemId(R.id.item_discover);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
     private void initBottomNavigation() {
-        BottomNavigationView navigationView = findViewById(R.id.bottom_main);
-        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mBottomNavigationView = findViewById(R.id.bottom_main);
+        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {

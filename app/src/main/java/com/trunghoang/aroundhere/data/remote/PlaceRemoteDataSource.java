@@ -50,4 +50,8 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
     @Override
     public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
     }
+
+    @Override
+    public void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
+    }
 }

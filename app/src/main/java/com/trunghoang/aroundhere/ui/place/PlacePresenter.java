@@ -26,14 +26,17 @@ public class PlacePresenter implements PlaceContract.Presenter {
     @Override
     public void start() {
         if (mPlace == null) return;
-        updatePlaceFromLocal();
-        updatePlaceFromRemote();
+        getPlaceFromLocal();
+        getPlaceFromRemote();
     }
 
     @Override
     public void updateFavoredStatus() {
         mPlace.setFavored(!mPlace.isFavored());
-        mPlaceRepository.updatePlaceToLocal(mPlace, new OnDataLoadedCallback<Place>() {
+        SearchParams searchParams = new SearchParams();
+        searchParams.setLocal(true);
+        searchParams.setPlace(mPlace);
+        mPlaceRepository.savePlace(searchParams, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
                 mView.showUpdateInform(mPlace.isFavored() ?
@@ -44,7 +47,6 @@ public class PlacePresenter implements PlaceContract.Presenter {
 
             @Override
             public void onDataNotAvailable(Exception exception) {
-                if (exception != null) mView.showUpdateError(exception);
             }
         });
     }
@@ -53,7 +55,10 @@ public class PlacePresenter implements PlaceContract.Presenter {
     public void updateCheckInStatus() {
         mPlace.setCheckedIn(!mPlace.isCheckedIn());
         if (mPlace.isCheckedIn()) mPlace.setCheckedInTime(new Date().getTime());
-        mPlaceRepository.updatePlaceToLocal(mPlace, new OnDataLoadedCallback<Place>() {
+        SearchParams searchParams = new SearchParams();
+        searchParams.setLocal(true);
+        searchParams.setPlace(mPlace);
+        mPlaceRepository.savePlace(searchParams, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
                 mView.showUpdateInform(mPlace.isCheckedIn() ?
@@ -64,16 +69,18 @@ public class PlacePresenter implements PlaceContract.Presenter {
 
             @Override
             public void onDataNotAvailable(Exception exception) {
-                if (exception != null) mView.showUpdateError(exception);
             }
         });
     }
 
-    private void updatePlaceFromLocal() {
-        mPlaceRepository.updatePlaceFromLocal(mPlace.getResId(), new OnDataLoadedCallback<Place>() {
+    private void getPlaceFromLocal() {
+        SearchParams searchParams = new SearchParams();
+        searchParams.setLocal(true);
+        searchParams.setResId(mPlace.getResId());
+        mPlaceRepository.getPlace(searchParams, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
-                updatePlace(data);
+                showPlace(data);
             }
 
             @Override
@@ -83,12 +90,12 @@ public class PlacePresenter implements PlaceContract.Presenter {
         });
     }
 
-    private void updatePlaceFromRemote() {
-        updateReviewsFromRemote();
-        updateTimePriceFromRemote();
+    private void getPlaceFromRemote() {
+        getInfoFromRemote();
+        getReviewsFromRemote();
     }
 
-    private void updateReviewsFromRemote() {
+    private void getReviewsFromRemote() {
         mView.showLoadingIndicator(true);
         SearchParams searchParams = new SearchParams();
         searchParams.setRemote(true);
@@ -96,7 +103,7 @@ public class PlacePresenter implements PlaceContract.Presenter {
         mPlaceRepository.getReviews(searchParams, new OnDataLoadedCallback<List<Review>>() {
             @Override
             public void onDataLoaded(List<Review> data) {
-                processReviews(data);
+                showReviews(data);
             }
 
             @Override
@@ -106,35 +113,31 @@ public class PlacePresenter implements PlaceContract.Presenter {
         });
     }
 
-    private void updateTimePriceFromRemote() {
+    private void getInfoFromRemote() {
         SearchParams searchParams = new SearchParams();
         searchParams.setRemote(true);
         searchParams.setPlaceUrl(mPlace.getDetailUrl());
         mPlaceRepository.getPlace(searchParams, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
-                processPlace(data);
+                showPlace(data);
             }
 
             @Override
             public void onDataNotAvailable(Exception exception) {
-                if (exception != null) mView.showUpdateError(exception);
             }
         });
     }
 
-    private void processPlace(Place place) {
-        mView.showPlace(place);
+    private void showPlace(Place place) {
+        mView.showPlace(Place.mergePlace(mPlace, place));
     }
 
-    private void processReviews(List<Review> reviews) {
+    private void showReviews(List<Review> reviews) {
         mView.showReviews(reviews);
     }
 
     private void updatePlace(Place place) {
-        mPlace.setFavored(place.isFavored());
-        mPlace.setCheckedIn(place.isCheckedIn());
-        mPlace.setCheckedInTime(place.getCheckedInTime());
-        mView.updatePlace(mPlace);
+        mView.updatePlace(Place.mergePlace(mPlace, place));
     }
 }

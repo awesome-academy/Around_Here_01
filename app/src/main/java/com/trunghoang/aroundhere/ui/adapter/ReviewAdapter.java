@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Review;
 
@@ -56,6 +57,7 @@ public class ReviewAdapter extends BaseAdapter<Review, ReviewAdapter.ReviewViewH
             if (review == null) return;
             Glide.with(mContext)
                     .load(review.getUser().getAvatar())
+                    .apply(RequestOptions.circleCropTransform())
                     .into(mImageAvatar);
             mTextName.setText(review.getUser().getDisplayName());
             mTextTime.setText(review.getCreatedTimeDiff());

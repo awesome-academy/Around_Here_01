@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.db.AppDatabase;
 import com.trunghoang.aroundhere.data.db.PlaceDAO;
 import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
+import com.trunghoang.aroundhere.data.model.GlobalData;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.SearchParams;
@@ -110,6 +112,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         mSwipeRefreshLayout = mRootView.findViewById(R.id.swipe_refresh_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new OnInteractionListener());
         initRecyclerView();
+        initQuickSearch();
         if (mQuery != null) {
             TextView textSearch = mRootView.findViewById(R.id.text_search_hint);
             textSearch.setText(mQuery);
@@ -185,6 +188,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
 
     @Override
     public void onSuccess(Location location) {
+        GlobalData.getInstance().setLastLocation(location);
         SearchParams searchParams = new SearchParams();
         searchParams.setLocation(location);
         searchParams.setQuery(mQuery);
@@ -230,6 +234,18 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
                 }));
     }
 
+    private void initQuickSearch() {
+        ImageButton restaurant = mRootView.findViewById(R.id.image_restaurant);
+        ImageButton beer = mRootView.findViewById(R.id.image_beer);
+        ImageButton coffee = mRootView.findViewById(R.id.image_coffee);
+        ImageButton game = mRootView.findViewById(R.id.image_game);
+        OnInteractionListener onInteractionListener = new OnInteractionListener();
+        restaurant.setOnClickListener(onInteractionListener);
+        beer.setOnClickListener(onInteractionListener);
+        coffee.setOnClickListener(onInteractionListener);
+        game.setOnClickListener(onInteractionListener);
+    }
+
     private void showPlaceActivity(Place place) {
         Intent intent = new Intent(mContext, PlaceActivity.class);
         intent.putExtra(Constants.EXTRA_PLACE, place);
@@ -252,6 +268,18 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
             switch (v.getId()) {
                 case R.id.constraint_search_container:
                     mListener.onSearchClick(mQuery);
+                    break;
+                case R.id.image_restaurant:
+                    mListener.onSearchClick(getString(R.string.quick_search_restaurant_text));
+                    break;
+                case R.id.image_coffee:
+                    mListener.onSearchClick(getString(R.string.quick_search_coffee_text));
+                    break;
+                case R.id.image_beer:
+                    mListener.onSearchClick(getString(R.string.quick_search_beer_text));
+                    break;
+                case R.id.image_game:
+                    mListener.onSearchClick(getString(R.string.quick_search_game_text));
                     break;
             }
         }

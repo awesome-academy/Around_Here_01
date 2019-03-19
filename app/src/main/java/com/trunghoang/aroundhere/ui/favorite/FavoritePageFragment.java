@@ -2,6 +2,7 @@ package com.trunghoang.aroundhere.ui.favorite;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,6 +24,8 @@ import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.FavoriteAdapter;
+import com.trunghoang.aroundhere.ui.adapter.PlaceClickListener;
+import com.trunghoang.aroundhere.ui.place.PlaceActivity;
 import com.trunghoang.aroundhere.util.Constants;
 
 import java.util.ArrayList;
@@ -73,6 +77,12 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_favorite_page, container, false);
         initRecyclerView(rootView);
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         switch (mFavoriteType) {
             case Constants.FavoriteType.ARG_VALUE_FAVORITES:
                 mPresenter.loadFavoredPlaces();
@@ -81,7 +91,6 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
                 mPresenter.loadVisitedPlaces();
                 break;
         }
-        return rootView;
     }
 
     @Override
@@ -102,7 +111,7 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
     }
 
     private void initRecyclerView(View rootView) {
-        RecyclerView recyclerView = rootView.findViewById(R.id.recycler_favorites);
+        final RecyclerView recyclerView = rootView.findViewById(R.id.recycler_favorites);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new FavoriteAdapter(mContext, new ArrayList<Place>());
@@ -111,5 +120,21 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
                 linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
         recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addOnItemTouchListener(new PlaceClickListener(mContext, new PlaceClickListener.OnPlaceClickCallback() {
+            @Override
+            public void onSingleTapUp(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child == null) return;
+                Place place =
+                        mAdapter.getItemAtPosition(recyclerView.getChildAdapterPosition(child));
+                showPlaceActivity(place);
+            }
+        }));
+    }
+
+    private void showPlaceActivity(Place place) {
+        Intent intent = new Intent(mContext, PlaceActivity.class);
+        intent.putExtra(Constants.EXTRA_PLACE, place);
+        startActivity(intent);
     }
 }

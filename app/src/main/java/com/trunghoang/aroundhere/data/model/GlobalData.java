@@ -20,6 +20,7 @@ public class GlobalData {
     }
 
     private String mPage = PlacesKey.DEFAULT_PAGE;
+    private Location mLastLocation;
 
     private GlobalData() {
     }
@@ -39,6 +40,14 @@ public class GlobalData {
 
     public void setPage(String page) {
         mPage = page;
+    }
+
+    public Location getLastLocation() {
+        return mLastLocation;
+    }
+
+    public void setLastLocation(Location lastLocation) {
+        mLastLocation = lastLocation;
     }
 
     public String buildPlacesApiUrl(SearchParams searchParams) {

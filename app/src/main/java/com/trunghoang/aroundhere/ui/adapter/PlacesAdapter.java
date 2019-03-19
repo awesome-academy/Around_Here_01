@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.util.CalcUtils;
@@ -57,8 +59,11 @@ public class PlacesAdapter extends BaseAdapter<Place, PlacesAdapter.PlaceViewHol
             if (place == null) {
                 return;
             }
+            int cornerRadius = mContext.getResources()
+                    .getDimensionPixelSize(R.dimen.place_info_corner_radius);
             Glide.with(mContext)
                     .load(place.getPhoto())
+                    .apply(new RequestOptions().transform(new RoundedCorners(cornerRadius)))
                     .into(mPlacePhoto);
             mDistance.setText(mContext.getString(R.string.place_info_distance,
                     CalcUtils.getKm(place.getDistance())));
