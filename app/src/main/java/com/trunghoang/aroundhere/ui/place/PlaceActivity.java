@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.db.AppDatabase;
+import com.trunghoang.aroundhere.data.db.PlaceDAO;
 import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
@@ -56,12 +57,11 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
             bindInitView(place);
         }
         Context appContext = getApplicationContext();
+        PlaceDAO placeDAO = AppDatabase.getInstance(appContext).placeDAO();
         mPresenter = new PlacePresenter(place,
-                PlaceRepository.getInstance(appContext,
+                PlaceRepository.getInstance(placeDAO,
                         PlaceRemoteDataSource.getInstance(),
-                        PlaceLocalDataSource.getInstance(
-                                AppDatabase.getInstance(appContext).placeDAO()
-                        )),
+                        PlaceLocalDataSource.getInstance(placeDAO)),
                 this);
         mPresenter.start();
     }

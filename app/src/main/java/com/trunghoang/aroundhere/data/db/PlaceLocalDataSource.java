@@ -16,13 +16,14 @@ public class PlaceLocalDataSource implements PlaceDataSource {
     private static PlaceLocalDataSource sInstance;
     private PlaceDAO mPlaceDAO;
 
-    private PlaceLocalDataSource() { }
+    private PlaceLocalDataSource(PlaceDAO placeDAO) {
+        mPlaceDAO = placeDAO;
+    }
 
     public static PlaceLocalDataSource getInstance(PlaceDAO placeDAO) {
         if (sInstance == null) {
-            sInstance = new PlaceLocalDataSource();
+            sInstance = new PlaceLocalDataSource(placeDAO);
         }
-        sInstance.mPlaceDAO = placeDAO;
         return sInstance;
     }
 

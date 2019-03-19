@@ -1,9 +1,7 @@
 package com.trunghoang.aroundhere.data.model;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.trunghoang.aroundhere.data.db.AppDatabase;
 import com.trunghoang.aroundhere.data.db.DaoHandler;
 import com.trunghoang.aroundhere.data.db.DaoTask;
 import com.trunghoang.aroundhere.data.db.PlaceDAO;
@@ -18,18 +16,17 @@ public class PlaceRepository implements PlaceDataSource {
     private PlaceDataSource mLocal;
     private PlaceDAO mPlaceDAO;
 
-    private PlaceRepository(Context appContext, PlaceDataSource remote, PlaceDataSource local) {
+    private PlaceRepository(PlaceDAO placeDAO, PlaceDataSource remote, PlaceDataSource local) {
         mRemote = remote;
         mLocal = local;
-        AppDatabase db = AppDatabase.getInstance(appContext);
-        mPlaceDAO = db.placeDAO();
+        mPlaceDAO = placeDAO;
     }
 
-    public static PlaceRepository getInstance(Context appContext,
+    public static PlaceRepository getInstance(PlaceDAO placeDAO,
                                               PlaceDataSource remote,
                                               PlaceDataSource local) {
         if (sInstance == null) {
-            sInstance = new PlaceRepository(appContext, remote, local);
+            sInstance = new PlaceRepository(placeDAO, remote, local);
         }
         return sInstance;
     }

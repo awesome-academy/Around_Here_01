@@ -30,6 +30,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.data.db.AppDatabase;
+import com.trunghoang.aroundhere.data.db.PlaceDAO;
 import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
@@ -79,12 +80,11 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
         super.onAttach(context);
         mContext = context;
         Context appContext = getActivity().getApplicationContext();
+        PlaceDAO placeDAO = AppDatabase.getInstance(appContext).placeDAO();
         mPresenter = new DiscoverPresenter(
-                PlaceRepository.getInstance(appContext,
+                PlaceRepository.getInstance(placeDAO,
                         PlaceRemoteDataSource.getInstance(),
-                        PlaceLocalDataSource.getInstance(
-                                AppDatabase.getInstance(appContext).placeDAO()
-                        )),
+                        PlaceLocalDataSource.getInstance(placeDAO)),
                 this);
         if (mContext instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) mContext;
