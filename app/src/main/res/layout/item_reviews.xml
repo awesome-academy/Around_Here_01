@@ -36,6 +36,7 @@
 
     <TextView
         android:id="@+id/text_review"
+        style="@style/ItemReviewsContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/item_review_margin_top"
@@ -53,9 +54,8 @@
         android:layout_height="wrap_content"
         android:background="@drawable/shape_place_detail_score"
         android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/text_time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/text_name"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="@string/sample_item_review_score" />
 
 </android.support.constraint.ConstraintLayout>

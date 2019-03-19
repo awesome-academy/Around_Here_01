@@ -11,13 +11,14 @@
         android:id="@+id/image_place_photo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/item_place_photo_margin"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="fitCenter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/backgrounds/scenic[0]" />
+        tools:srcCompat="@tools:sample/backgrounds/scenic[1]" />
 
     <TextView
         android:id="@+id/text_distance"

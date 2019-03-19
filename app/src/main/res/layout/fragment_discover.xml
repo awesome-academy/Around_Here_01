@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorDimBackground">
+    android:background="@android:color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_discover"
@@ -13,22 +13,22 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
+        android:paddingStart="@dimen/search_margin_side"
+        android:paddingLeft="@dimen/search_margin_side"
+        android:paddingRight="@dimen/search_margin_side"
         android:theme="?attr/actionBarTheme"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:paddingLeft="@dimen/search_margin_side"
-        android:paddingStart="@dimen/search_margin_side"
-        android:paddingRight="@dimen/search_margin_side">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraint_search_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/shape_search_bg"
             android:clickable="true"
-            android:focusable="true"
-            android:background="@drawable/shape_search_bg">
+            android:focusable="true">
 
             <ImageView
                 android:id="@+id/image_search_icon"
@@ -85,7 +85,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageButton
                         android:id="@+id/image_restaurant"
                         style="@style/QuickSearchIcon"
                         app:layout_constraintEnd_toStartOf="@+id/image_coffee"
@@ -94,7 +94,7 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_quick_search_food" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageButton
                         android:id="@+id/image_coffee"
                         style="@style/QuickSearchIcon"
                         app:layout_constraintEnd_toStartOf="@+id/image_beer"
@@ -103,17 +103,17 @@
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_quick_search_coffee" />
 
-                    <ImageView
+                    <android.support.v7.widget.AppCompatImageButton
                         android:id="@+id/image_beer"
                         style="@style/QuickSearchIcon"
-                        app:layout_constraintEnd_toStartOf="@+id/image_entertain"
+                        app:layout_constraintEnd_toStartOf="@+id/image_game"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toEndOf="@+id/image_coffee"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@drawable/ic_quick_search_beer" />
 
-                    <ImageView
-                        android:id="@+id/image_entertain"
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/image_game"
                         style="@style/QuickSearchIcon"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
@@ -123,9 +123,9 @@
 
                     <TextView
                         android:id="@+id/text_restaurant"
+                        style="@style/QuickSearchText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/quick_search_text_margin_top"
                         android:text="@string/quick_search_restaurant_text"
                         app:layout_constraintEnd_toEndOf="@+id/image_restaurant"
                         app:layout_constraintStart_toStartOf="@+id/image_restaurant"
@@ -133,9 +133,9 @@
 
                     <TextView
                         android:id="@+id/text_coffee"
+                        style="@style/QuickSearchText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/quick_search_text_margin_top"
                         android:text="@string/quick_search_coffee_text"
                         app:layout_constraintEnd_toEndOf="@+id/image_coffee"
                         app:layout_constraintStart_toStartOf="@+id/image_coffee"
@@ -143,49 +143,39 @@
 
                     <TextView
                         android:id="@+id/text_beer"
+                        style="@style/QuickSearchText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/quick_search_text_margin_top"
                         android:text="@string/quick_search_beer_text"
                         app:layout_constraintEnd_toEndOf="@+id/image_beer"
                         app:layout_constraintStart_toStartOf="@+id/image_beer"
                         app:layout_constraintTop_toBottomOf="@+id/image_beer" />
 
                     <TextView
-                        android:id="@+id/text_entertain"
+                        android:id="@+id/text_game"
+                        style="@style/QuickSearchText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/quick_search_text_margin_top"
-                        android:text="@string/quick_search_entertain_text"
-                        app:layout_constraintEnd_toEndOf="@+id/image_entertain"
-                        app:layout_constraintStart_toStartOf="@+id/image_entertain"
-                        app:layout_constraintTop_toBottomOf="@+id/image_entertain" />
+                        android:text="@string/quick_search_game_text"
+                        app:layout_constraintEnd_toEndOf="@+id/image_game"
+                        app:layout_constraintStart_toStartOf="@+id/image_game"
+                        app:layout_constraintTop_toBottomOf="@+id/image_game" />
 
                 </android.support.constraint.ConstraintLayout>
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraint_search_status"
+                <TextView
+                    android:id="@+id/text_search_count"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorDimBackground"
+                    android:paddingTop="@dimen/search_count_margin_vertical"
+                    android:paddingBottom="@dimen/search_count_margin_vertical"
+                    android:textAlignment="center"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/constraint_quick_search_bar">
-
-                    <TextView
-                        android:id="@+id/text_search_count"
-                        style="@style/SearchCountDiscover"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/search_count_margin_vertical"
-                        android:layout_marginBottom="@dimen/search_count_margin_vertical"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0"
-                        tools:text="Found 1 result within 1km" />
-                </android.support.constraint.ConstraintLayout>
+                    app:layout_constraintTop_toBottomOf="@id/constraint_quick_search_bar"
+                    app:layout_constraintVertical_bias="1.0" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_place_list"
@@ -193,7 +183,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/constraint_search_status"
+                    app:layout_constraintTop_toBottomOf="@id/text_result_title2"
                     tools:listitem="@layout/item_places" />
 
                 <ProgressBar
@@ -205,7 +195,29 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/constraint_search_status" />
+                    app:layout_constraintTop_toTopOf="@+id/text_search_count" />
+
+                <TextView
+                    android:id="@+id/text_result_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/place_info_bound_margin_vertical"
+                    android:layout_marginStart="@dimen/place_info_bound_margin_horizontal"
+                    android:layout_marginLeft="@dimen/place_info_bound_margin_horizontal"
+                    style="@style/DiscoverTitle"
+                    android:text="@string/discover_title_awesome_places"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_search_count" />
+
+                <TextView
+                    android:id="@+id/text_result_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/discover_title_sub_margin_top"
+                    style="@style/DiscoverTitle.Sub"
+                    android:text="@string/discover_title_near_you"
+                    app:layout_constraintStart_toStartOf="@+id/text_result_title"
+                    app:layout_constraintTop_toBottomOf="@+id/text_result_title" />
 
             </android.support.constraint.ConstraintLayout>
         </android.support.v4.widget.NestedScrollView>
