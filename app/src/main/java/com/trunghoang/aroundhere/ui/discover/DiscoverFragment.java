@@ -29,6 +29,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.trunghoang.aroundhere.R;
+import com.trunghoang.aroundhere.data.db.AppDatabase;
+import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
 import com.trunghoang.aroundhere.data.model.Place;
 import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.SearchParams;
@@ -76,9 +78,13 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     public void onAttach(Context context) {
         super.onAttach(context);
         mContext = context;
+        Context appContext = getActivity().getApplicationContext();
         mPresenter = new DiscoverPresenter(
-                PlaceRepository.getInstance(getActivity().getApplicationContext(),
-                        PlaceRemoteDataSource.getInstance()),
+                PlaceRepository.getInstance(appContext,
+                        PlaceRemoteDataSource.getInstance(),
+                        PlaceLocalDataSource.getInstance(
+                                AppDatabase.getInstance(appContext).placeDAO()
+                        )),
                 this);
         if (mContext instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) mContext;

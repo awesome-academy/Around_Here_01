@@ -7,10 +7,8 @@ import com.trunghoang.aroundhere.data.db.AppDatabase;
 import com.trunghoang.aroundhere.data.db.DaoHandler;
 import com.trunghoang.aroundhere.data.db.DaoTask;
 import com.trunghoang.aroundhere.data.db.PlaceDAO;
-import com.trunghoang.aroundhere.data.db.PlaceLocalDataSource;
 import com.trunghoang.aroundhere.data.db.entity.PlaceEntity;
 import com.trunghoang.aroundhere.data.db.entity.PlaceEntityDataMapper;
-import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 
 import java.util.List;
 
@@ -20,16 +18,18 @@ public class PlaceRepository implements PlaceDataSource {
     private PlaceDataSource mLocal;
     private PlaceDAO mPlaceDAO;
 
-    private PlaceRepository(Context appContext) {
-        mRemote = PlaceRemoteDataSource.getInstance();
-        mLocal = PlaceLocalDataSource.getInstance(AppDatabase.getInstance(appContext).placeDAO());
+    private PlaceRepository(Context appContext, PlaceDataSource remote, PlaceDataSource local) {
+        mRemote = remote;
+        mLocal = local;
         AppDatabase db = AppDatabase.getInstance(appContext);
         mPlaceDAO = db.placeDAO();
     }
 
-    public static PlaceRepository getInstance(Context appContext) {
+    public static PlaceRepository getInstance(Context appContext,
+                                              PlaceDataSource remote,
+                                              PlaceDataSource local) {
         if (sInstance == null) {
-            sInstance = new PlaceRepository(appContext);
+            sInstance = new PlaceRepository(appContext, remote, local);
         }
         return sInstance;
     }
