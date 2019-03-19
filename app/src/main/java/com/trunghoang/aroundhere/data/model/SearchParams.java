@@ -5,8 +5,6 @@ import android.location.Location;
 public class SearchParams {
     private Location mLocation;
     private String mQuery;
-    private boolean mIsFavored;
-    private boolean mIsVisited;
     private boolean mIsRemote;
     private boolean mIsLocal;
     private String mPlaceUrl;
@@ -26,22 +24,6 @@ public class SearchParams {
 
     public void setQuery(String query) {
         mQuery = query;
-    }
-
-    public boolean isFavored() {
-        return mIsFavored;
-    }
-
-    public void setFavored(boolean favored) {
-        mIsFavored = favored;
-    }
-
-    public boolean isVisited() {
-        return mIsVisited;
-    }
-
-    public void setVisited(boolean visited) {
-        mIsVisited = visited;
     }
 
     public boolean isRemote() {

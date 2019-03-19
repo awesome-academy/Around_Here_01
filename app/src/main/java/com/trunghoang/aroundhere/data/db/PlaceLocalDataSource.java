@@ -27,27 +27,8 @@ public class PlaceLocalDataSource implements PlaceDataSource {
     }
 
     @Override
-    public void getPlaces(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Place>> callback) {
-        if (searchParams.isFavored()) {
-            DaoTask<Void, List<Place>> daoTask = new DaoTask<>(new DaoHandler<Void, List<Place>>() {
-                @Override
-                public List<Place> execute(Void[] args, PlaceDAO placeDao) {
-                    List<PlaceEntity> entities = placeDao.getFavoredPlaces();
-                    return PlaceEntityDataMapper.transform(entities);
-                }
-            }, mPlaceDAO, callback);
-            daoTask.execute();
-        }
-        if (searchParams.isVisited()) {
-            DaoTask<Void, List<Place>> daoTask = new DaoTask<>(new DaoHandler<Void, List<Place>>() {
-                @Override
-                public List<Place> execute(Void[] args, PlaceDAO placeDao) {
-                    List<PlaceEntity> entities = placeDao.getVisitedPlaces();
-                    return PlaceEntityDataMapper.transform(entities);
-                }
-            }, mPlaceDAO, callback);
-            daoTask.execute();
-        }
+    public void getPlaces(SearchParams searchParams,
+                          @NonNull final OnDataLoadedCallback<List<Place>> callback) {
     }
 
     @Override
@@ -56,5 +37,29 @@ public class PlaceLocalDataSource implements PlaceDataSource {
 
     @Override
     public void getReviews(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Review>> callback) {
+    }
+
+    @Override
+    public void getFavoredPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+        DaoTask<Void, List<Place>> daoTask = new DaoTask<>(new DaoHandler<Void, List<Place>>() {
+            @Override
+            public List<Place> execute(Void[] args, PlaceDAO placeDao) {
+                List<PlaceEntity> entities = placeDao.getFavoredPlaces();
+                return PlaceEntityDataMapper.transform(entities);
+            }
+        }, mPlaceDAO, callback);
+        daoTask.execute();
+    }
+
+    @Override
+    public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+        DaoTask<Void, List<Place>> daoTask = new DaoTask<>(new DaoHandler<Void, List<Place>>() {
+            @Override
+            public List<Place> execute(Void[] args, PlaceDAO placeDao) {
+                List<PlaceEntity> entities = placeDao.getVisitedPlaces();
+                return PlaceEntityDataMapper.transform(entities);
+            }
+        }, mPlaceDAO, callback);
+        daoTask.execute();
     }
 }

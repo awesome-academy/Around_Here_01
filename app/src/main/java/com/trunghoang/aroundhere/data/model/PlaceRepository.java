@@ -37,7 +37,6 @@ public class PlaceRepository implements PlaceDataSource {
     @Override
     public void getPlaces(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Place>> callback) {
         if (searchParams.isRemote()) mRemote.getPlaces(searchParams, callback);
-        if (searchParams.isLocal()) mLocal.getPlaces(searchParams, callback);
     }
 
     @Override
@@ -50,8 +49,18 @@ public class PlaceRepository implements PlaceDataSource {
         if (searchParams.isRemote()) mRemote.getReviews(searchParams, callback);
     }
 
+    @Override
+    public void getFavoredPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+        mLocal.getFavoredPlaces(callback);
+    }
+
+    @Override
+    public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+        mLocal.getFavoredPlaces(callback);
+    }
+
     public void updatePlaceFromLocal(String resId,
-                                      @NonNull OnDataLoadedCallback<Place> callback) {
+                                     @NonNull OnDataLoadedCallback<Place> callback) {
         DaoTask<String, Place> getPlaceTask = new DaoTask<>(new DaoHandler<String, Place>() {
             @Override
             public Place execute(String[] placeIds, PlaceDAO placeDao) {

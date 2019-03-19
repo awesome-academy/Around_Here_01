@@ -42,4 +42,12 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
                 callback);
         downloadTask.execute(GlobalData.getInstance().getReviewsApiUrl(searchParams));
     }
+
+    @Override
+    public void getFavoredPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+    }
+
+    @Override
+    public void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback) {
+    }
 }
