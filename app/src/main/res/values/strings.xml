@@ -13,7 +13,7 @@
     <string name="quick_search_restaurant_text">Restaurant</string>
     <string name="quick_search_coffee_text">Coffee</string>
     <string name="quick_search_beer_text">Beer</string>
-    <string name="quick_search_entertain_text">Entertain</string>
+    <string name="quick_search_game_text">Game</string>
     <string name="sample_distance">200m</string>
     <string name="sample_open_status">Opening</string>
     <string name="place_info_more_text">View More</string>
@@ -42,4 +42,6 @@
     <string name="favorites_title_favorites">Favorites</string>
     <string name="favorites_title_visited">Visited Places</string>
     <string name="local_loading_error">Something wrong with local database</string>
+    <string name="discover_title_awesome_places">Discover Awesome Places</string>
+    <string name="discover_title_near_you">Near You</string>
 </resources>

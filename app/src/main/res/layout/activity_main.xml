@@ -17,12 +17,10 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_main"
+        style="@style/Widget.MaterialComponents.BottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:itemBackground="@color/colorPrimary"
-        app:itemIconTint="@color/menu_main_states"
-        app:itemTextColor="@color/menu_main_states"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
