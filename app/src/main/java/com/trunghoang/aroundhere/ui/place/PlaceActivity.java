@@ -29,9 +29,9 @@ import com.trunghoang.aroundhere.data.model.PlaceRepository;
 import com.trunghoang.aroundhere.data.model.Review;
 import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.ReviewAdapter;
+import com.trunghoang.aroundhere.util.AppDateUtils;
 import com.trunghoang.aroundhere.util.CalcUtils;
 import com.trunghoang.aroundhere.util.Constants;
-import com.trunghoang.aroundhere.util.DateUtils;
 import com.trunghoang.aroundhere.util.PlaceUpdateType;
 
 import java.util.ArrayList;
@@ -41,20 +41,22 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
 
     private PlaceContract.Presenter mPresenter;
     private ReviewAdapter mReviewAdapter;
+    private TextView mTextTitle;
+    private TextView mTextAddress;
+    private TextView mTextDistance;
+    private TextView mTextIsOpen;
+    private ImageView mImagePlace;
+    private TextView mTextPrice;
+    private TextView mTextTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place);
-        initToolbar();
-        initRecyclerView();
-        setFavoriteButtonClick();
-        setCheckInButtonClick();
         Intent intent = getIntent();
         Place place = null;
         if (intent != null && intent.hasExtra(Constants.EXTRA_PLACE)) {
             place = intent.getParcelableExtra(Constants.EXTRA_PLACE);
-            bindInitView(place);
         }
         Context appContext = getApplicationContext();
         PlaceDAO placeDAO = AppDatabase.getInstance(appContext).placeDAO();
@@ -64,6 +66,11 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
                         PlaceLocalDataSource.getInstance(placeDAO)),
                 this);
         mPresenter.start();
+        initToolbar();
+        initRecyclerView();
+        initView();
+        setFavoriteButtonClick();
+        setCheckInButtonClick();
     }
 
     @Override
@@ -93,18 +100,35 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
 
     @Override
     public void showPlace(Place place) {
-        TextView textPrice = findViewById(R.id.text_price);
-        TextView textTime = findViewById(R.id.text_time);
-        textPrice.setText(getString(R.string.place_info_price,
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(place.getTitle());
+        }
+        Glide.with(this)
+                .load(place.getPhoto())
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(mImagePlace);
+        mTextTitle.setText(place.getTitle());
+        mTextAddress.setText(place.getAddress());
+        mTextDistance.setText(getString(R.string.place_info_distance,
+                CalcUtils.getKm(place.getDistance())));
+        String placeIsOpenText;
+        if (place.isOpen()) {
+            placeIsOpenText = getString(R.string.place_opening);
+        } else {
+            placeIsOpenText = getString(R.string.place_closed);
+        }
+        mTextIsOpen.setText(placeIsOpenText);
+        mTextPrice.setText(getString(R.string.place_info_price,
                 place.getPriceMin(),
                 place.getPriceMax()));
-        if (place.getStartTime() == null) {
-            textTime.setText(getString(R.string.default_price));
+        if (place.getTimeOpen() == 0) {
+            mTextTime.setText(getString(R.string.default_price));
         } else {
-            textTime.setText(getString(R.string.place_info_time,
-                    place.getStartTime(),
-                    place.getEndTime()));
+            mTextTime.setText(getString(R.string.place_info_time,
+                    AppDateUtils.getTimeFormat(place.getTimeOpen()),
+                    AppDateUtils.getTimeFormat(place.getTimeClose())));
         }
+        updatePlace(place);
     }
 
     @Override
@@ -141,6 +165,12 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    public static Intent getPlaceIntent(Context context, Place place) {
+        Intent intent = new Intent(context, PlaceActivity.class);
+        intent.putExtra(Constants.EXTRA_PLACE, place);
+        return intent;
+    }
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -162,26 +192,14 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
 
-    private void bindInitView(Place place) {
-        TextView textTitle = findViewById(R.id.text_title);
-        TextView textAddress = findViewById(R.id.text_address);
-        TextView textDistance = findViewById(R.id.text_distance);
-        TextView textIsOpen = findViewById(R.id.text_is_open);
-        ImageView imagePlace = findViewById(R.id.app_bar_image);
-        Glide.with(this)
-                .load(place.getPhoto())
-                .into(imagePlace);
-        textTitle.setText(place.getTitle());
-        textAddress.setText(place.getAddress());
-        textDistance.setText(getString(R.string.place_info_distance,
-                CalcUtils.getKm(place.getDistance())));
-        String placeIsOpenText;
-        if (place.isOpen()) {
-            placeIsOpenText = getString(R.string.place_opening);
-        } else {
-            placeIsOpenText = getString(R.string.place_closed);
-        }
-        textIsOpen.setText(placeIsOpenText);
+    private void initView() {
+        mTextTitle = findViewById(R.id.text_title);
+        mTextAddress = findViewById(R.id.text_address);
+        mTextDistance = findViewById(R.id.text_distance);
+        mTextIsOpen = findViewById(R.id.text_is_open);
+        mImagePlace = findViewById(R.id.app_bar_image);
+        mTextPrice = findViewById(R.id.text_price);
+        mTextTime = findViewById(R.id.text_time);
     }
 
     private void setFavoriteButtonClick() {
@@ -209,13 +227,9 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         checkInButton.setClickable(!place.isCheckedIn());
         Chip chip = findViewById(R.id.chip_check_in);
         chip.setVisibility(place.isCheckedIn() ? View.VISIBLE : View.GONE);
-        chip.setText(getString(R.string.place_detail_visited, DateUtils.getDateFromTime(place.getCheckedInTime())));
-        chip.setOnCloseIconClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPresenter.updateCheckInStatus();
-            }
-        });
+        chip.setText(getString(R.string.place_detail_visited,
+                AppDateUtils.getDateFromTime(place.getCheckedInTime())));
+        chip.setOnCloseIconClickListener(new OnButtonClickListener());
     }
 
     private class OnButtonClickListener implements View.OnClickListener {
@@ -227,6 +241,9 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
                     mPresenter.updateFavoredStatus();
                     break;
                 case R.id.button_checkin:
+                    mPresenter.updateCheckInStatus();
+                    break;
+                case R.id.chip_check_in:
                     mPresenter.updateCheckInStatus();
                     break;
             }

@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.trunghoang.aroundhere.R;
 import com.trunghoang.aroundhere.ui.favorite.FavoritePageFragment;
-import com.trunghoang.aroundhere.util.Constants;
+import com.trunghoang.aroundhere.util.FavoriteType;
 
 public class FavoritePagerAdapter extends FragmentPagerAdapter {
 
@@ -27,10 +27,10 @@ public class FavoritePagerAdapter extends FragmentPagerAdapter {
         String favoriteType = null;
         switch (position) {
             case PAGE_VISITED:
-                favoriteType = Constants.FavoriteType.ARG_VALUE_VISITED;
+                favoriteType = FavoriteType.ARGUMENT_VALUE_VISITED;
                 break;
             case PAGE_FAVORITES:
-                favoriteType = Constants.FavoriteType.ARG_VALUE_FAVORITES;
+                favoriteType = FavoriteType.ARGUMENT_VALUE_FAVORITES;
                 break;
         }
         return FavoritePageFragment.newInstance(favoriteType);

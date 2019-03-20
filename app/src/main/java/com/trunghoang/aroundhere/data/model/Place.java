@@ -1,11 +1,19 @@
 package com.trunghoang.aroundhere.data.model;
 
+import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public class Place implements Parcelable {
+
+    private static final int METERS_OF_KM = 1000;
 
     public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>() {
 
@@ -19,6 +27,7 @@ public class Place implements Parcelable {
             return new Place[0];
         }
     };
+    private static final long FULL_DAY = 1000 * 60 * 60 * 24;
     private double mDistance;
     private boolean mIsOpen;
     private String mPhoto;
@@ -33,6 +42,31 @@ public class Place implements Parcelable {
     private boolean mIsFavored;
     private boolean mIsCheckedIn;
     private long mCheckedInTime;
+    private long mTimeOpen;
+    private long mTimeClose;
+    private double mLat;
+    private double mLon;
+
+    public static Place mergePlace(Place source, Place dest) {
+        source.mPhoto = dest.mPhoto == null ? source.mPhoto : dest.mPhoto;
+        source.mTitle = dest.mTitle == null ? source.mTitle : dest.mTitle;
+        source.mAddress = dest.mAddress == null ? source.mAddress : dest.mAddress;
+        source.mPriceMin = dest.mPriceMin == 0L ? source.mPriceMin : dest.mPriceMin;
+        source.mPriceMax = dest.mPriceMax == 0L ? source.mPriceMax : dest.mPriceMax;
+        source.mStartTime = dest.mStartTime == null ? source.mStartTime : dest.mStartTime;
+        source.mEndTime = dest.mEndTime == null ? source.mEndTime : dest.mEndTime;
+        source.mResId = dest.mResId == null ? source.mResId : dest.mResId;
+        source.mDetailUrl = dest.mDetailUrl == null ? source.mDetailUrl : dest.mDetailUrl;
+        source.mIsFavored = dest.mIsFavored ? dest.mIsFavored : source.mIsFavored;
+        source.mIsCheckedIn = dest.mIsCheckedIn ? dest.mIsCheckedIn : source.mIsCheckedIn;
+        source.mCheckedInTime = dest.mCheckedInTime == 0L ? source.mCheckedInTime :
+                dest.mCheckedInTime;
+        source.mTimeOpen = dest.mTimeOpen == 0L ? source.mTimeOpen : dest.mTimeOpen;
+        source.mTimeClose = dest.mTimeClose == 0L ? source.mTimeClose : dest.mTimeClose;
+        source.mLat = (Double.isNaN(dest.mLat) || dest.mLat == 0.0d) ? source.mLat : dest.mLat;
+        source.mLon = (Double.isNaN(dest.mLon) || dest.mLon == 0.0d) ? source.mLon : dest.mLon;
+        return source;
+    }
 
     public Place() {
     }
@@ -52,6 +86,10 @@ public class Place implements Parcelable {
         mIsFavored = (parcel.readInt() == 1);
         mIsCheckedIn = (parcel.readInt() == 1);
         mCheckedInTime = parcel.readLong();
+        mTimeOpen = parcel.readLong();
+        mTimeClose = parcel.readLong();
+        mLat = parcel.readDouble();
+        mLon = parcel.readDouble();
     }
 
     public Place(JSONObject jsonObject) {
@@ -62,9 +100,27 @@ public class Place implements Parcelable {
         mAddress = jsonObject.optString(JSONKey.ADDRESS);
         mResId = jsonObject.optString(JSONKey.PLACE_ID);
         mDetailUrl = jsonObject.optString(JSONKey.DETAIL_URL);
+        if (TextUtils.isEmpty(mPhoto)) mPhoto = jsonObject.optString(JSONKey.PHOTO_URL);
+        if (TextUtils.isEmpty(mResId)) mResId = jsonObject.optString(JSONKey.RES_ID);
+        if (TextUtils.isEmpty(mDetailUrl)) mDetailUrl = jsonObject.optString(JSONKey.RES_URL);
+        JSONArray openingTime = jsonObject.optJSONArray(JSONKey.OPENING_TIME);
+        if (openingTime != null && openingTime.length() != 0) {
+            JSONObject time0 = openingTime.optJSONObject(0);
+            JSONObject timeOpen = time0.optJSONObject(JSONKey.TIME_OPEN);
+            JSONObject timeClose = time0.optJSONObject(JSONKey.TIME_CLOSE);
+            mTimeOpen = timeOpen.optLong(JSONKey.TOTAL_MILLS);
+            mTimeClose = timeClose.optLong(JSONKey.TOTAL_MILLS);
+            if (mTimeClose == 0) mTimeClose = FULL_DAY;
+        }
+        mPriceMin = jsonObject.optLong(JSONKey.PRICE_MIN);
+        mPriceMax = jsonObject.optLong(JSONKey.PRICE_MAX);
+        mLat = jsonObject.optDouble(JSONKey.LAT);
+        mLon = jsonObject.optDouble(JSONKey.LON);
     }
 
     public double getDistance() {
+        if (mLat == 0.0d || mLon == 0.0d || Double.isNaN(mLat) || Double.isNaN(mLon)) return mDistance;
+        if (Double.isNaN(mDistance) || mDistance == 0.0d) return calculateDistance(mTitle, mLat, mLon);
         return mDistance;
     }
 
@@ -73,7 +129,7 @@ public class Place implements Parcelable {
     }
 
     public boolean isOpen() {
-        return mIsOpen;
+        return mIsOpen || checkOpen(mTimeOpen, mTimeClose);
     }
 
     public void setOpen(boolean open) {
@@ -176,6 +232,38 @@ public class Place implements Parcelable {
         mCheckedInTime = checkedInTime;
     }
 
+    public long getTimeOpen() {
+        return mTimeOpen;
+    }
+
+    public void setTimeOpen(long timeOpen) {
+        mTimeOpen = timeOpen;
+    }
+
+    public long getTimeClose() {
+        return mTimeClose;
+    }
+
+    public void setTimeClose(long timeClose) {
+        mTimeClose = timeClose;
+    }
+
+    public double getLat() {
+        return mLat;
+    }
+
+    public void setLat(double lat) {
+        mLat = lat;
+    }
+
+    public double getLon() {
+        return mLon;
+    }
+
+    public void setLon(double lon) {
+        mLon = lon;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -197,6 +285,29 @@ public class Place implements Parcelable {
         dest.writeInt(mIsFavored ? 1 : 0);
         dest.writeInt(mIsCheckedIn ? 1 : 0);
         dest.writeLong(mCheckedInTime);
+        dest.writeLong(mTimeOpen);
+        dest.writeLong(mTimeClose);
+        dest.writeDouble(mLat);
+        dest.writeDouble(mLon);
+    }
+
+    private double calculateDistance(String title, double lat, double lon) {
+        Location placeLocation = new Location(title);
+        placeLocation.setLatitude(lat);
+        placeLocation.setLongitude(lon);
+        return GlobalData.getInstance().getLastLocation().distanceTo(placeLocation) / METERS_OF_KM;
+    }
+
+    private boolean checkOpen(long timeOpen, long timeClose) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        long midnight = cal.getTimeInMillis();
+        long now = date.getTime() - midnight;
+        return (now - timeOpen >= 0) && (timeClose - now >= 0);
     }
 
     public static class Builder {
@@ -214,6 +325,10 @@ public class Place implements Parcelable {
         private boolean mIsFavored;
         private boolean mIsCheckedIn;
         private long mCheckedInTime;
+        private long mTimeOpen;
+        private long mTimeClose;
+        private double mLat;
+        private double mLon;
 
         public Builder() {
         }
@@ -288,6 +403,26 @@ public class Place implements Parcelable {
             return this;
         }
 
+        public Builder setTimeOpen(long timeOpen) {
+            mTimeOpen = timeOpen;
+            return this;
+        }
+
+        public Builder setTimeClose(long timeClose) {
+            mTimeClose = timeClose;
+            return this;
+        }
+
+        public Builder setLat(double lat) {
+            mLat = lat;
+            return this;
+        }
+
+        public Builder setLon(double lon) {
+            mLon = lon;
+            return this;
+        }
+
         public Place build() {
             Place place = new Place();
             place.setDistance(mDistance);
@@ -304,6 +439,10 @@ public class Place implements Parcelable {
             place.setFavored(mIsFavored);
             place.setCheckedIn(mIsCheckedIn);
             place.setCheckedInTime(mCheckedInTime);
+            place.setTimeOpen(mTimeOpen);
+            place.setTimeClose(mTimeClose);
+            place.setLat(mLat);
+            place.setLon(mLon);
             return place;
         }
     }
@@ -323,5 +462,13 @@ public class Place implements Parcelable {
         String TIME_START = "StartTime";
         String TIME_END = "EndTime";
         String RES_ID = "RestaurantID";
+        String OPENING_TIME = "OpeningTime";
+        String TIME_OPEN = "TimeOpen";
+        String TIME_CLOSE = "TimeClose";
+        String TOTAL_MILLS = "TotalMilliseconds";
+        String PHOTO_URL = "MobileImageUrl";
+        String RES_URL = "MicrositeUrl";
+        String LAT = "Latitude";
+        String LON = "Longtitude";
     }
 }

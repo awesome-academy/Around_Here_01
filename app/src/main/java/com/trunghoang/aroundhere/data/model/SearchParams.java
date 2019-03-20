@@ -9,6 +9,7 @@ public class SearchParams {
     private boolean mIsLocal;
     private String mPlaceUrl;
     private String mResId;
+    private Place mPlace;
 
     public Location getLocation() {
         return mLocation;
@@ -56,5 +57,13 @@ public class SearchParams {
 
     public void setResId(String resId) {
         mResId = resId;
+    }
+
+    public Place getPlace() {
+        return mPlace;
+    }
+
+    public void setPlace(Place place) {
+        mPlace = place;
     }
 }
