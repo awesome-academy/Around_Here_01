@@ -2,7 +2,6 @@ package com.trunghoang.aroundhere.ui.favorite;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,13 +25,13 @@ import com.trunghoang.aroundhere.data.remote.PlaceRemoteDataSource;
 import com.trunghoang.aroundhere.ui.adapter.FavoriteAdapter;
 import com.trunghoang.aroundhere.ui.adapter.PlaceClickListener;
 import com.trunghoang.aroundhere.ui.place.PlaceActivity;
-import com.trunghoang.aroundhere.util.Constants;
+import com.trunghoang.aroundhere.util.FavoriteType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FavoritePageFragment extends Fragment implements FavoritePageContract.View {
-    private static final String ARG_FAVORITE_TYPE = "ARG_FAVORITE_TYPE";
+    private static final String ARGUMENT_FAVORITE_TYPE = "ARGUMENT_FAVORITE_TYPE";
     private Context mContext;
     private FavoritePageContract.Presenter mPresenter;
     private String mFavoriteType;
@@ -45,7 +44,7 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
     public static FavoritePageFragment newInstance(String favoriteType) {
         FavoritePageFragment fragment = new FavoritePageFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(ARG_FAVORITE_TYPE, favoriteType);
+        bundle.putString(ARGUMENT_FAVORITE_TYPE, favoriteType);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -68,7 +67,7 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mFavoriteType = getArguments().getString(ARG_FAVORITE_TYPE);
+            mFavoriteType = getArguments().getString(ARGUMENT_FAVORITE_TYPE);
         }
     }
 
@@ -84,10 +83,10 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
     public void onResume() {
         super.onResume();
         switch (mFavoriteType) {
-            case Constants.FavoriteType.ARG_VALUE_FAVORITES:
+            case FavoriteType.ARGUMENT_VALUE_FAVORITES:
                 mPresenter.loadFavoredPlaces();
                 break;
-            case Constants.FavoriteType.ARG_VALUE_VISITED:
+            case FavoriteType.ARGUMENT_VALUE_VISITED:
                 mPresenter.loadVisitedPlaces();
                 break;
         }
@@ -127,14 +126,8 @@ public class FavoritePageFragment extends Fragment implements FavoritePageContra
                 if (child == null) return;
                 Place place =
                         mAdapter.getItemAtPosition(recyclerView.getChildAdapterPosition(child));
-                showPlaceActivity(place);
+                startActivity(PlaceActivity.getPlaceIntent(mContext, place));
             }
         }));
-    }
-
-    private void showPlaceActivity(Place place) {
-        Intent intent = new Intent(mContext, PlaceActivity.class);
-        intent.putExtra(Constants.EXTRA_PLACE, place);
-        startActivity(intent);
     }
 }

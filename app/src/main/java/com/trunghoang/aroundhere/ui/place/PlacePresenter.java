@@ -33,13 +33,10 @@ public class PlacePresenter implements PlaceContract.Presenter {
     @Override
     public void updateFavoredStatus() {
         mPlace.setFavored(!mPlace.isFavored());
-        SearchParams searchParams = new SearchParams();
-        searchParams.setLocal(true);
-        searchParams.setPlace(mPlace);
-        mPlaceRepository.savePlace(searchParams, new OnDataLoadedCallback<Place>() {
+        mPlaceRepository.savePlace(mPlace, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
-                mView.showUpdateInform(mPlace.isFavored() ?
+                mView.showUpdateInform(data.isFavored() ?
                         PlaceUpdateType.FAVORITES_ADDED :
                         PlaceUpdateType.FAVORITES_REMOVED);
                 updatePlace(data);
@@ -55,13 +52,10 @@ public class PlacePresenter implements PlaceContract.Presenter {
     public void updateCheckInStatus() {
         mPlace.setCheckedIn(!mPlace.isCheckedIn());
         if (mPlace.isCheckedIn()) mPlace.setCheckedInTime(new Date().getTime());
-        SearchParams searchParams = new SearchParams();
-        searchParams.setLocal(true);
-        searchParams.setPlace(mPlace);
-        mPlaceRepository.savePlace(searchParams, new OnDataLoadedCallback<Place>() {
+        mPlaceRepository.savePlace(mPlace, new OnDataLoadedCallback<Place>() {
             @Override
             public void onDataLoaded(Place data) {
-                mView.showUpdateInform(mPlace.isCheckedIn() ?
+                mView.showUpdateInform(data.isCheckedIn() ?
                         PlaceUpdateType.VISITED_ADDED :
                         PlaceUpdateType.VISITED_REMOVED);
                 updatePlace(data);

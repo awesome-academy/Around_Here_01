@@ -75,8 +75,9 @@ public class PlaceLocalDataSource implements PlaceDataSource {
         daoTask.execute();
     }
 
-    public void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
-        if (searchParams.getPlace() != null) {
+    @Override
+    public void savePlace(Place place, @NonNull OnDataLoadedCallback<Place> callback) {
+        if (place != null) {
             DaoTask<Place, Place> updatePlaceTask = new DaoTask<>(new DaoHandler<Place, Place>() {
                 @Override
                 public Place execute(Place[] places, PlaceDAO placeDao) {
@@ -95,7 +96,7 @@ public class PlaceLocalDataSource implements PlaceDataSource {
                     return places[0];
                 }
             }, mPlaceDAO, callback);
-            updatePlaceTask.execute(searchParams.getPlace());
+            updatePlaceTask.execute(place);
         }
     }
 }

@@ -165,6 +165,12 @@ public class PlaceActivity extends AppCompatActivity implements PlaceContract.Vi
         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
+    public static Intent getPlaceIntent(Context context, Place place) {
+        Intent intent = new Intent(context, PlaceActivity.class);
+        intent.putExtra(Constants.EXTRA_PLACE, place);
+        return intent;
+    }
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

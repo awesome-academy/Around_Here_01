@@ -54,7 +54,7 @@ public class PlaceRepository implements PlaceDataSource {
     }
 
     @Override
-    public void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
-        if (searchParams.isLocal()) mLocal.savePlace(searchParams, callback);
+    public void savePlace(Place place, @NonNull OnDataLoadedCallback<Place> callback) {
+        mLocal.savePlace(place, callback);
     }
 }

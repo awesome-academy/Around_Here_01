@@ -10,5 +10,5 @@ public interface PlaceDataSource {
     void getReviews(SearchParams searchParams, @NonNull OnDataLoadedCallback<List<Review>> callback);
     void getFavoredPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback);
     void getVisitedPlaces(@NonNull OnDataLoadedCallback<List<Place>> callback);
-    void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback);
+    void savePlace(Place place, @NonNull OnDataLoadedCallback<Place> callback);
 }

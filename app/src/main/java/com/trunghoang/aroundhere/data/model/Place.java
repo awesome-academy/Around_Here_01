@@ -13,6 +13,8 @@ import java.util.Date;
 
 public class Place implements Parcelable {
 
+    private static final int METERS_OF_KM = 1000;
+
     public static final Parcelable.Creator<Place> CREATOR = new Parcelable.Creator<Place>() {
 
         @Override
@@ -118,12 +120,7 @@ public class Place implements Parcelable {
 
     public double getDistance() {
         if (mLat == 0.0d || mLon == 0.0d || Double.isNaN(mLat) || Double.isNaN(mLon)) return mDistance;
-        if (Double.isNaN(mDistance) || mDistance == 0.0d) {
-            Location placeLocation = new Location(mTitle);
-            placeLocation.setLatitude(mLat);
-            placeLocation.setLongitude(mLon);
-            mDistance = GlobalData.getInstance().getLastLocation().distanceTo(placeLocation) / 1000;
-        }
+        if (Double.isNaN(mDistance) || mDistance == 0.0d) return calculateDistance(mTitle, mLat, mLon);
         return mDistance;
     }
 
@@ -132,18 +129,7 @@ public class Place implements Parcelable {
     }
 
     public boolean isOpen() {
-        if (!mIsOpen) {
-            Date date = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);
-            long midnight = cal.getTimeInMillis();
-            long now = date.getTime() - midnight;
-            mIsOpen = ((now - mTimeOpen >= 0) && (mTimeClose - now >= 0));
-        }
-        return mIsOpen;
+        return mIsOpen || checkOpen(mTimeOpen, mTimeClose);
     }
 
     public void setOpen(boolean open) {
@@ -303,6 +289,25 @@ public class Place implements Parcelable {
         dest.writeLong(mTimeClose);
         dest.writeDouble(mLat);
         dest.writeDouble(mLon);
+    }
+
+    private double calculateDistance(String title, double lat, double lon) {
+        Location placeLocation = new Location(title);
+        placeLocation.setLatitude(lat);
+        placeLocation.setLongitude(lon);
+        return GlobalData.getInstance().getLastLocation().distanceTo(placeLocation) / METERS_OF_KM;
+    }
+
+    private boolean checkOpen(long timeOpen, long timeClose) {
+        Date date = new Date();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        long midnight = cal.getTimeInMillis();
+        long now = date.getTime() - midnight;
+        return (now - timeOpen >= 0) && (timeClose - now >= 0);
     }
 
     public static class Builder {

@@ -52,6 +52,6 @@ public class PlaceRemoteDataSource implements PlaceDataSource {
     }
 
     @Override
-    public void savePlace(SearchParams searchParams, @NonNull OnDataLoadedCallback<Place> callback) {
+    public void savePlace(Place place, @NonNull OnDataLoadedCallback<Place> callback) {
     }
 }

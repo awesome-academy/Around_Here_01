@@ -66,13 +66,13 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() <= 1) {
             finish();
-        } else {
-            if (mBottomNavigationView.getSelectedItemId() != R.id.item_discover) {
-                mBottomNavigationView.setSelectedItemId(R.id.item_discover);
-            } else {
-                super.onBackPressed();
-            }
+            return;
         }
+        if (mBottomNavigationView.getSelectedItemId() != R.id.item_discover) {
+            mBottomNavigationView.setSelectedItemId(R.id.item_discover);
+            return;
+        }
+        super.onBackPressed();
     }
 
     private void initBottomNavigation() {

@@ -247,9 +247,7 @@ public class DiscoverFragment extends Fragment implements DiscoverContract.View,
     }
 
     private void showPlaceActivity(Place place) {
-        Intent intent = new Intent(mContext, PlaceActivity.class);
-        intent.putExtra(Constants.EXTRA_PLACE, place);
-        startActivity(intent);
+        startActivity(PlaceActivity.getPlaceIntent(mContext, place));
     }
 
     private void showSearchResultCount(int number) {
